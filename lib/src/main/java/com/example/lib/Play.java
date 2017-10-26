@@ -16,7 +16,7 @@ public class Play {
         int numberOfPlayers = 2;
         int startingMoney = 100;
         boolean isPlaying = true;
-        int currentBet = 0;
+        int currentBet = 10;
         int pot = 0;
         Scanner scanner = new Scanner( System.in );
         int choice = 0;
@@ -28,12 +28,12 @@ public class Play {
         deck.shuffle();
 
 //      initialise community hand
-        Hand communityHand = new Hand();
+//        Hand communityHand = new Hand();
 
 //      deal 5 cards to community hand
-        for(int i = 0; i<5; i++){
-            deck.dealTo(communityHand);
-        }
+//        for(int i = 0; i<5; i++){
+//            deck.dealTo(communityHand);
+//        }
 
 //      create players with numbers as their name and deal 2 cards to each player
         ArrayList<Player> players = new ArrayList<>();
@@ -41,17 +41,35 @@ public class Play {
             Hand tempHand = new Hand();
             deck.dealTo(tempHand);
             deck.dealTo(tempHand);
+            deck.dealTo(tempHand);
+            deck.dealTo(tempHand);
+            deck.dealTo(tempHand);
             Player playerTemp = new Player(startingMoney, tempHand, String.valueOf(i+1));
             players.add(playerTemp);
             System.out.println("Player " + players.get(i).name + "'s hand  : " + players.get(i).hand.show());
+            System.out.println("Straight flush      : " + players.get(i).hand.isStraightFlush());
+            System.out.println("Four of a Kind      : " + players.get(i).hand.isFourOfAKind());
+            System.out.println("Full House          : " + players.get(i).hand.isFullHouse());
+            System.out.println("Flush               : " + players.get(i).hand.isFlush());
+            System.out.println("Straight            : " + players.get(i).hand.isStraight());
+            System.out.println("Three of a Kin      : " + players.get(i).hand.isThreeOfAKind());
+            System.out.println("Double Pair         : " + players.get(i).hand.isDoublePair());
+            System.out.println("Pair                : " + players.get(i).hand.isPair());
+            System.out.println("Highest Card        : " + players.get(i).hand.highestCard().strCard());
+            players.get(i).hand.checkTypeRank();
+            System.out.println("ABSOLUTE RANK:" + players.get(i).hand.absoluteRank());
         }
+
+
+
+
 
         while(isPlaying){
             for(Player player:players){
                 choice = 0; //resets choice
                 System.out.println();
                 System.out.println("!!!PLAYER " + player.name + "'s TURN!!!");
-                System.out.println("Community hand   : " + communityHand.show());
+//                System.out.println("Community hand   : " + communityHand.show());
                 System.out.println("Current bet      : " + currentBet);
                 System.out.println("Pot              : " + pot);
                 System.out.println("Player " + player.name + "'s hand  : " + player.hand.show());

@@ -9,13 +9,13 @@ public class Player {
     public int money;
     public Hand hand;
     public String name;
+    public int choice = 0;
 
     Player(int money, Hand hand, String name){
-//        this.money = money;
-//        this.hand = hand;
         setMoney(money);
         setHand(hand);
         setName(name);
+        setChoice(0);
     }
 
     void setMoney(int money){
@@ -28,6 +28,10 @@ public class Player {
 
     void setName( String name){
         this.name = name;
+    }
+
+    void setChoice(int choice){
+        this.choice = choice;
     }
 
 }

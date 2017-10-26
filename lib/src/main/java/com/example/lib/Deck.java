@@ -1,5 +1,4 @@
 package com.example.lib;
-
 import java.util.*;
 
 /**
@@ -12,7 +11,7 @@ public class Deck{
 // automatically add 52 cards to deck when initialised, unshuffled
     static{
         for (int i = 1; i < 5; i++){
-            for (int j = 1; j<14; j++) {
+            for (int j = 2; j < 15; j++) {
                 Card temp = new Card(j, i);
                 cards.add(temp);
             }
@@ -22,8 +21,6 @@ public class Deck{
     Deck(){
         this.cards = cards;
     }
-
-//  shuffle deck
 
     void shuffle() {
         Collections.shuffle(this.cards);
