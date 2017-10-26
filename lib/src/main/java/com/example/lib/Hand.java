@@ -125,7 +125,29 @@ public class Hand {
 
     //    check if hand is straight (checks the sequence of ALL cards; hand MUST consist of 5 cards)
     boolean isStraight() {
-        int[] tempCards = new int[5];
+       int[] inv = this.inventory();
+       for(int i:inv){
+           System.out.print(" "+ i);
+       }
+       System.out.println();
+       int count;
+       for(int i=0; i <inv.length-5; i++){
+           count = 0;
+           for(int j=0; j<inv.length; i++){
+               if(inv[j] ==0) break;
+               else count++;
+
+               if(count ==5){
+                   this.type = 5;
+                   this.rank = j + 2;
+                   return true;
+               }
+           }
+       }
+       return false;
+
+
+        /* int[] tempCards = new int[5];
         for (int i = 0; i < this.cards.size(); i++) {
             tempCards[i] = this.cards.get(i).value;
         }
@@ -138,7 +160,7 @@ public class Hand {
 
         this.type = 5;
         this.rank = this.highestCard().absValue();
-        return true;
+        return true;*/
     }
 
 //    check if hand is straight flush (checks that it's both straight and flush')
