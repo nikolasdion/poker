@@ -90,8 +90,61 @@ public class Hand {
         }
     }
 
+    /* Below are methods which determine the type of hand and its ranking.
+    * this.type and this.rank is set while the methods are run, therefore it not only returns
+    * a boolean value but also modifies the hand's properties (i.e. rank and type)
+    * NOTE: most of these only work properly with a 5-hand card*/
 
-    //    check if hand is flush(checks if hand contains 5 or more cards from the same suit
+    boolean isStraightFlush(){
+        if(this.isStraight() && this.isFlush()){
+            this.type = 9;
+            this.rank = this.highestCard().absValue();
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    boolean isFourOfAKind(){
+        int [] inv = this.inventory();
+        for(int i=0 ; i<13; i++){
+            if(inv[i] == 4){
+                this.type = 8;
+                this.rank = i+2;
+                return true;
+            }
+        }
+        return false;
+//        int count = 0;
+//        int value = 0;
+//        for(int i = 0; i <= this.cards.size()-4; i++){
+//            for (int j = i+1; j <= this.cards.size(); j++){
+//                if(this.cards.get(i).value == this.cards.get(j).value){
+//                    value = this.cards.get(i).value;
+//                    count = count +1;
+//                }
+//            }
+//        }
+//        if(count >=4){
+//            this.type = 8;
+//            this.rank = value;
+//            return true;
+//        } else{
+//            return false;
+//        }
+    }
+
+    boolean isFullHouse(){
+        if(this.isPair() && this.isThreeOfAKind()){
+            this.type = 7;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     boolean isFlush() {
         int spades = 0;
         int hearts = 0;
@@ -123,7 +176,6 @@ public class Hand {
         }
     }
 
-    //    check if hand is straight (checks the sequence of ALL cards; hand MUST consist of 5 cards)
     boolean isStraight() {
        int[] inv = this.inventory();
        for(int i:inv){
@@ -163,66 +215,11 @@ public class Hand {
         return true;*/
     }
 
-//    check if hand is straight flush (checks that it's both straight and flush')
-    boolean isStraightFlush(){
-        if(this.isStraight() && this.isFlush()){
-            this.type = 9;
-            this.rank = this.highestCard().absValue();
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-//      check if hand is four of a kind
-    boolean isFourOfAKind(){
-        int [] inv = this.inventory();
-        for(int i=0 ; i<13; i++){
-            if(inv[i] == 4){
-                this.type = 8;
-                this.rank = i+2;
-                return true;
-            }
-        }
-        return false;
-//        int count = 0;
-//        int value = 0;
-//        for(int i = 0; i <= this.cards.size()-4; i++){
-//            for (int j = i+1; j <= this.cards.size(); j++){
-//                if(this.cards.get(i).value == this.cards.get(j).value){
-//                    value = this.cards.get(i).value;
-//                    count = count +1;
-//                }
-//            }
-//        }
-//        if(count >=4){
-//            this.type = 8;
-//            this.rank = value;
-//            return true;
-//        } else{
-//            return false;
-//        }
-    }
-
-    //      check if hand is three of a kind
     boolean isThreeOfAKind() {
         int[] inv = this.inventory();
         for (int i = 0; i < 13; i++) {
             if (inv[i] == 3) {
                 this.type = 4;
-                this.rank = i + 2;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    boolean isPair() {
-        int[] inv = this.inventory();
-        for (int i = 0; i < 13; i++) {
-            if (inv[i] == 2) {
-                this.type = 2;
                 this.rank = i + 2;
                 return true;
             }
@@ -249,23 +246,16 @@ public class Hand {
         }
     }
 
-    boolean isFullHouse(){
-        if(this.isPair() && this.isThreeOfAKind()){
-            this.type = 7;
-            return true;
+    boolean isPair() {
+        int[] inv = this.inventory();
+        for (int i = 0; i < 13; i++) {
+            if (inv[i] == 2) {
+                this.type = 2;
+                this.rank = i + 2;
+                return true;
+            }
         }
-        else {
-            return false;
-        }
+        return false;
     }
-
-
-
-
-
-
-
-
-
 
 }

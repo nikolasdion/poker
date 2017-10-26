@@ -5,7 +5,7 @@ package com.example.lib;
  */
 
 public class Player {
-//   a player has two attributes: cards in her hand and the money she has
+    /* a player has two attributes: cards in her hand and the money she has */
     public int money;
     public Hand hand;
     public String name;
