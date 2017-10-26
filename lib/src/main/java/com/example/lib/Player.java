@@ -6,30 +6,28 @@ package com.example.lib;
 
 public class Player {
 //   a player has two attributes: cards in her hand and the money she has
-    private int money;
-    private Card[] hand;
+    public int money;
+    public Hand hand;
+    public String name;
 
-    Player(int money, Card[] hand){
+    Player(int money, Hand hand, String name){
 //        this.money = money;
 //        this.hand = hand;
         setMoney(money);
         setHand(hand);
+        setName(name);
     }
 
     void setMoney(int money){
         this.money = money;
     }
 
-    void setHand(Card[] hand){
+    void setHand( Hand hand){
         this.hand = hand;
     }
 
-    //prints out current hand of the player
-    void displayHand(){
-        System.out.println("Your current hand:");
-        for(int i =0; i<this.hand.length; i++){
-            System.out.println(this.hand[i].strCard());
-        }
+    void setName( String name){
+        this.name = name;
     }
 
 }

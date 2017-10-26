@@ -1,6 +1,5 @@
 package com.example.lib;
-
-import java.rmi.AccessException;
+import java.util.*;
 
 /**
  * Created by NDS on 25/10/2017.
@@ -25,6 +24,7 @@ public class Card {
     //suit is represented as a number 1-4 from clubs to spades
     // value is represented as a number 1-13 from ace to king
 
+// convert card into a string understandable to player
     public String strCard(){
         String showValue = "";
         String showSuit = "";
@@ -55,6 +55,27 @@ public class Card {
 
         return showCardStr;
     }
+
+
+    // compare two cards
+    boolean isHigherThan(Card otherCard){
+        int card1;
+        int card2;
+        //aces are the highrst card, change ace value from 1 to 14
+        if(this.value == 1){
+            card1 = 13*4 + this.suit;
+        } else{
+            card1 = this.value*4 + this.suit;
+        }
+        if(otherCard.value == 1){
+            card2 = 13*4 + this.suit;
+        } else{
+            card2 = this.value*4 + this.suit;
+        }
+        return card1 > card2;
+    }
+
+
 
 
 
