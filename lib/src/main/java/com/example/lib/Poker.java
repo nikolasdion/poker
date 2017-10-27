@@ -2,15 +2,12 @@ package com.example.lib;
 import java.util.*;
 
 public class Poker {
+
+
+
+
     public static void main(String[] args){
 
-//      ******TESTING*****
-//        Card card = new Card(1,2);
-//        System.out.println(card.strCard());
-//        ArrayList<Card> hand1 = new ArrayList();
-//        hand1.add(card);
-//        Player player1 = new Player( 100, hand1 ) ;
-//        player1.showHand();
 
         Hand emptyHand = new Hand();
         int numberOfPlayers = 2;
@@ -27,11 +24,11 @@ public class Poker {
         Deck deck = new Deck();
         deck.shuffle();
 
-        /* Initialise and deal 5 cards to community hand */
-        Hand communityHand = new Hand();
-        for(int i = 0; i<5; i++){
-            deck.dealTo(communityHand);
-        }
+//        /* Initialise and deal 5 cards to community hand */
+//        Hand communityHand = new Hand();
+//        for(int i = 0; i<5; i++){
+//            deck.dealTo(communityHand);
+//        }
 
         /* Initialise players (player name is a number) and deal 2 cards to every player's hand */
         ArrayList<Player> players = new ArrayList<>();
@@ -44,18 +41,7 @@ public class Poker {
             deck.dealTo(tempHand);
             Player playerTemp = new Player(startingMoney, tempHand, String.valueOf(i+1));
             players.add(playerTemp);
-            System.out.println("Player " + players.get(i).name + "'s hand  : " + players.get(i).hand.show());
-            System.out.println("Straight flush      : " + players.get(i).hand.isStraightFlush());
-            System.out.println("Four of a Kind      : " + players.get(i).hand.isFourOfAKind());
-            System.out.println("Full House          : " + players.get(i).hand.isFullHouse());
-            System.out.println("Flush               : " + players.get(i).hand.isFlush());
-            System.out.println("Straight            : " + players.get(i).hand.isStraight());
-            System.out.println("Three of a Kin      : " + players.get(i).hand.isThreeOfAKind());
-            System.out.println("Double Pair         : " + players.get(i).hand.isDoublePair());
-            System.out.println("Pair                : " + players.get(i).hand.isPair());
-            System.out.println("Highest Card        : " + players.get(i).hand.highestCard().strCard());
             players.get(i).hand.checkTypeRank();
-            System.out.println("ABSOLUTE RANK:" + players.get(i).hand.absoluteRank());
         }
 
 

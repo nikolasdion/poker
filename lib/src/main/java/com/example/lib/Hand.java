@@ -176,14 +176,10 @@ public class Hand {
 
     boolean isStraight() {
        int[] inv = this.inventory();
-       for(int i:inv){
-           System.out.print(" "+ i);
-       }
-       System.out.println();
        int count;
-       for(int i=0; i <inv.length-5; i++){
+       for(int i = 0; i < inv.length-5; i++){
            count = 0;
-           for(int j=0; j<inv.length; i++){
+           for(int j = i ; j < inv.length; j++){
                if(inv[j] ==0) break;
                else count++;
 
@@ -195,22 +191,6 @@ public class Hand {
            }
        }
        return false;
-
-
-        /* int[] tempCards = new int[5];
-        for (int i = 0; i < this.cards.size(); i++) {
-            tempCards[i] = this.cards.get(i).value;
-        }
-        Arrays.sort(tempCards);
-        for (int i = 0; i < tempCards.length - 1; i++) {
-            if (tempCards[i] != tempCards[i + 1] - 1) {
-                return false;
-            }
-        }
-
-        this.type = 5;
-        this.rank = this.highestCard().absValue();
-        return true;*/
     }
 
     boolean isThreeOfAKind() {

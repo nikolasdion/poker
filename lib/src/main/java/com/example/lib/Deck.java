@@ -27,7 +27,7 @@ public class Deck{
         Collections.shuffle(this.cards);
         System.out.println("Deck shuffled.");
     }
-        
+
     void dealTo(Hand hand){
         boolean add = hand.cards.add(this.cards.remove(0));
     }
