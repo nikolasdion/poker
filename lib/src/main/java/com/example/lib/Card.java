@@ -5,8 +5,7 @@ package com.example.lib;
  */
 
 public class Card {
-    /*
-    Suit is represented as a number 1-4 from clubs to spades.
+    /* Suit is represented as a number 1-4 from clubs to spades.
     Value is represented as a number 2-14 from 2 to ace.
     */
     public int value;
@@ -26,7 +25,7 @@ public class Card {
     }
 
 
-    /* Display card data as a string, e.g. 2H (two of hearts) for Card(2,3) */
+    /* Display card data as a string, e.g. 2H for Card(2,3) (two of hearts) */
     public String strCard(){
         String showValue = "";
         String showSuit = "";

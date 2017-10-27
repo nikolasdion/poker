@@ -9,30 +9,37 @@ public class Player {
     public int money;
     public Hand hand;
     public String name;
-    public int choice = 0;
+    public int choice;
+    public boolean hasFolded;
 
     Player(int money, Hand hand, String name){
         setMoney(money);
         setHand(hand);
         setName(name);
         setChoice(0);
+        setFolded(false);
     }
 
     void setMoney(int money){
         this.money = money;
     }
 
-    void setHand( Hand hand){
+    void setHand(Hand hand){
         this.hand = hand;
     }
 
-    void setName( String name){
+    void setName(String name){
         this.name = name;
     }
 
     void setChoice(int choice){
         this.choice = choice;
     }
+
+    void setFolded(boolean hasFolded){
+        this.hasFolded = hasFolded;
+    }
+
 
 
 

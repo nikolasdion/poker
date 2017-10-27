@@ -50,7 +50,7 @@ public class Poker {
 
         while(isPlaying){
             for(Player player:players){
-                choice = 0;      //resets choice
+                if(player.hasFolded) break;
                 System.out.println();
                 System.out.println("!!!PLAYER " + player.name + "'s TURN!!!");
 //                System.out.println("Community hand   : " + communityHand.show());
@@ -58,11 +58,11 @@ public class Poker {
                 System.out.println("Pot              : " + pot);
                 System.out.println("Player " + player.name + "'s hand  : " + player.hand.show());
                 System.out.println("Player " + player.name + "'s money : " + player.money);
-                while(choice == 0){
+                while(player.choice == 0){
                     System.out.println("(1: raise, 2: call, 3: fold)");
                     System.out.print("Player " + player.name + "'s move  : ");
-                    choice = scanner.nextInt();
-                    switch(choice) {
+                    player.setChoice(scanner.nextInt());
+                    switch(player.choice) {
                         case 1: {
                             System.out.print("Raise by: ");
                             currentBet = currentBet + scanner.nextInt();
@@ -79,13 +79,12 @@ public class Poker {
                             break;
                         }
                         case 3: {
-                            isPlaying = false;
-                            winner = player;
+                            player.setFolded(true);
                             break;
                         }
                         default:{
                             System.out.println("Invalid input.");
-                            choice = 0;
+                            player.setChoice(0);
                         }
                     }
                 }
