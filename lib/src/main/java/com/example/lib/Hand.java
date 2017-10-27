@@ -237,4 +237,16 @@ public class Hand {
         return false;
     }
 
+    /*Selects best hand out of possible hands*/
+    void finalHand() {
+
+
+    }
+
+    /*create permutations with communityHand*/
+    ArrayList<Hand> permutations(Hand communityHand){
+        for{int i =0; i < hand.size
+        
+    }
+
 }

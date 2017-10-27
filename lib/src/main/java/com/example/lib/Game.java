@@ -215,12 +215,15 @@ public class Game {
         }
     }
 
+    /*Rewards winner of current game with money in the pot*/
     public void reward(){
         System.out.println("WINNER" + winner);
         System.out.println("The winner is Player " + players[winner].name);
         players[winner].setMoney(players[winner].money + pot);
+        pot = 0;
     }
 
+    /*Setup for a new game*/
     public void reset(){
         resetChoices();
         setWinner(-1);
@@ -241,6 +244,7 @@ public class Game {
         communityHand = emptyHand;
     }
 
+    /*Checks whether players want to continue playing another game after someone wins current game*/
     public void cont(){
         int cont = 0;
         while(cont == 0) {
