@@ -7,34 +7,35 @@ import java.util.Scanner;
  */
 
 public class Game {
+    /*variables that do not change between games*/
+
     public int numberOfPlayers;
     public Player[] players;
+    public boolean isPlaying = true;
+
+    /*variables that reset every game*/
     public int pot;
     public int currentBet;
     public Deck deck;
     public Hand communityHand = new Hand();
     Scanner scanner = new Scanner( System.in );
-    public Player winner;
+    public boolean showdown = false;
+    public int winner;
 
 
     /*Initialise game, creating array of players and shuffled deck,
     setting pot and currentBet to 0*/
     Game(int numberOfPlayers, int initialMoney){
-        this.numberOfPlayers = numberOfPlayers;
-        this.setPlayers(new Player[numberOfPlayers]);
-        this.setCurrentBet(0);
-        this.setPot(0);
-        Deck tempDeck = new Deck();
-        tempDeck.shuffle();
-        Hand emptyHand = new Hand();
-        this.setDeck(tempDeck);
+        setNumberOfPlayers(numberOfPlayers);
+        setPlayers(new Player[numberOfPlayers]);
         for(int i = 0; i < this.numberOfPlayers; i++){
-            this.players[i] = new Player (initialMoney, emptyHand, String.valueOf(i+1));
+            this.players[i] = new Player (initialMoney, String.valueOf(i+1));
         }
+        reset();
     }
 
-    public void setNumberOfPlayers(int n){
-        this.numberOfPlayers = n;
+    public void setNumberOfPlayers(int numberOfPlayers){
+        this.numberOfPlayers = numberOfPlayers;
     }
 
     public void setPot(int pot){
@@ -43,6 +44,10 @@ public class Game {
 
     public void setCurrentBet(int currentBet){
         this.currentBet = currentBet;
+    }
+
+    public void setWinner(int winner){
+        this.winner = winner;
     }
 
     public void setDeck(Deck deck){
@@ -76,9 +81,8 @@ public class Game {
 
     public void playerTurn(int index){
 //      check if player has folded
-        if(this.players[index].hasFolded) return;
 
-        this.players[index].setChoice(0);
+        players[index].setChoice(0);
         System.out.println();
         System.out.println("!!!PLAYER " + this.players[index].name + "'s TURN!!!");
         System.out.println("Community hand   : " + communityHand.show());
@@ -96,29 +100,28 @@ public class Game {
                 case 1: {
                     System.out.print("Raise by: ");
                     int raise = scanner.nextInt();
-                    if (this.players[index].money < currentBet + raise) {
+                    if (this.players[index].money < this.currentBet + raise) {
                         System.out.println("Insufficient money to raise.");
                         this.players[index].setChoice(0);
                         break;
                     }
-                    currentBet = currentBet + scanner.nextInt();
-                    pot = pot + currentBet;
-                    this.players[index].setMoney(this.players[index].money - currentBet);
+                    this.setCurrentBet(this.currentBet + raise);
+                    this.setPot(pot + this.currentBet);
+                    this.players[index].setMoney(this.players[index].money - this.currentBet);
                     break;
                 }
                 case 2: {
-                    if (this.players[index].money < currentBet) {
+                    if (this.players[index].money < this.currentBet) {
                         System.out.println("Insufficient money to call.");
                         this.players[index].setChoice(0);
                         break;
                     }
-                    pot = pot + currentBet;
-                    this.players[index].setMoney(this.players[index].money - currentBet);
+                    this.setPot(this.pot + this.currentBet);
+                    this.players[index].setMoney(this.players[index].money - this.currentBet);
                     System.out.println("Called.");
                     break;
                 }
                 case 3: {
-                    this.players[index].setFolded(true);
                     System.out.println("Folded.");
                     break;
                 }
@@ -137,21 +140,125 @@ public class Game {
     public boolean nextRound(){
         int numberFolded = 0;
         int numberCalled = 0;
-        for(Player player:this.players){
+        for(Player player:players){
             if(player.choice == 3) numberFolded++;
             else if(player.choice == 2) numberCalled++;
         }
-        if(this.numberOfPlayers == numberCalled + numberFolded) return true;
+        if(numberOfPlayers == (numberCalled + numberFolded + 1)) {return true;
+        }
+        //checked at the start of every player's turn, in case a full cycle has been completed and/*
+            // everyone has called/folded. -1 because the current player would've been the one raised*/
         else return false;
     }
 
+    /*Check if everyone has folded (used at the start of every playerturn)*/
     public boolean checkFolded(){
         int numberFolded = 0;
-        for(Player player:this.players){
+        for(Player player:players){
             if(player.choice == 3) numberFolded++;
         }
-        if(this.numberOfPlayers == numberFolded) return true;
+        if(numberOfPlayers == numberFolded + 1) return true;
         else return false;
+    }
+
+    public void resetChoices(){
+        for(Player player:players){
+            player.setChoice(0);
+        }
+    }
+
+    public void bettingStage(){
+        for(int round = 1; round < 4; round++){
+
+            thisRound: //break if everyone has called or folded
+            for(int turn = 1; turn < 4; turn++){
+
+
+
+                for(int index = 0; index < numberOfPlayers; index++){
+                    if(players[index].choice == 3) return; // skip player if she has folded
+
+                    if(checkFolded()){
+                        winner = index;
+                        return; // end betting stage if every player but one has folded
+                    }
+
+                    if(nextRound()) break thisRound; // if everyone has called/folded but one, proceed to next round
+
+
+                    playerTurn(index);
+                }
+
+            }
+
+            dealCommunity(); //deal one card to community hand after the end of each round
+
+            System.out.println();
+            System.out.println("Round has ended. Another card dealt to community hand.");
+            displayStatus();
+            resetChoices(); //reset everyone's choice to 0
+
+            if(round == 3) showdown = true;
+
+
+        }
+    }
+
+    public void showdown(){
+        int highest = 0;
+        System.out.println("SHOWDOWN");
+        for(int index = 0; index < numberOfPlayers; index++) {
+            System.out.println("Player abs: "+ players[index].hand.absoluteRank());
+            if (players[index].hand.absoluteRank() > highest) {
+                winner = index;
+            }
+        }
+    }
+
+    public void reward(){
+        System.out.println("WINNER" + winner);
+        System.out.println("The winner is Player " + players[winner].name);
+        players[winner].setMoney(players[winner].money + pot);
+    }
+
+    public void reset(){
+        resetChoices();
+        setWinner(-1);
+        showdown = false;
+        setCurrentBet(0);
+        setPot(0);
+
+        Deck tempDeck = new Deck();
+        tempDeck.shuffle();
+        setDeck(tempDeck);
+
+        Hand emptyHand = new Hand();
+        for(Player player:players){
+            player.setHand(emptyHand);
+            player.setChoice(0);
+        }
+
+        communityHand = emptyHand;
+    }
+
+    public void cont(){
+        int cont = 0;
+        while(cont == 0) {
+            System.out.println("Do you want to continue? (1: yes, 2: no)");
+            cont = scanner.nextInt();
+            switch (cont) {
+                case 1:
+                    isPlaying = true;
+                    break;
+                case 2:
+                    isPlaying = false;
+                    break;
+                default:
+                    System.out.println("Invalid input.");
+                    cont = 0;
+
+            }
+        }
     }
 
 

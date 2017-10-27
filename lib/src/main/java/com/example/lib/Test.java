@@ -42,32 +42,52 @@ public class Test {
 //        tempHand.checkTypeRank();
 //        System.out.println("ABSOLUTE RANK       : " + tempHand.absoluteRank());
 
+
+        Scanner scanner = new Scanner( System.in );
+
         Game game = new Game(2,100);
 
-        game.dealPlayers();
 
-        game.dealCommunity();
-        game.dealCommunity();
-        game.dealCommunity();
+        while(game.isPlaying){
+            game.reset();
+
+            game.dealPlayers();
+            game.dealCommunity();
+            game.dealCommunity();
+            game.dealCommunity();
+            game.displayStatus();
+
+            /*BETTING STAGE*/
+
+            game.bettingStage();
+
+            /*SHOWDOWN (if needed)*/
+
+            if(game.showdown) game.showdown();
+
+            game.reward();
+
+            game.cont();
 
 
-
-        game.displayStatus();
-
-        mainLoop: //Label, broken when everyone has folded
-        for(int round = 1; round < 4; round++){
-            for(int turn = 1; turn < 4; turn++){
-
-                if(game.nextRound()) break; // if everyone ahs called/folded, proceed to next round
-
-                for(int playerIndex = 0; playerIndex < game.numberOfPlayers; playerIndex++){
-                    if(game.checkFolded()) break mainLoop;
-                    game.playerTurn(playerIndex);
-                }
-            }
-
-            game.dealCommunity(); //deal one card to community hand after the end of each round
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
+
+
 }

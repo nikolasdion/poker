@@ -60,6 +60,7 @@ public class Hand {
     /* absolute rank of the hand, which if compared with other hand will give its standing
     * wrt to that hand*/
     int absoluteRank(){
+        checkTypeRank();
         return (100 * this.type) + this.rank;
     }
 

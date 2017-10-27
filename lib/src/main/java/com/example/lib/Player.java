@@ -10,14 +10,12 @@ public class Player {
     public Hand hand;
     public String name;
     public int choice;
-    public boolean hasFolded;
 
-    Player(int money, Hand hand, String name){
+    Player(int money, String name){
         setMoney(money);
         setHand(hand);
         setName(name);
         setChoice(0);
-        setFolded(false);
     }
 
     void setMoney(int money){
@@ -35,13 +33,6 @@ public class Player {
     void setChoice(int choice){
         this.choice = choice;
     }
-
-    void setFolded(boolean hasFolded){
-        this.hasFolded = hasFolded;
-    }
-
-
-
 
 
 }
