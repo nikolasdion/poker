@@ -1,7 +1,7 @@
 package com.example.lib;
 import java.util.*;
 
-public class Play {
+public class Poker {
     public static void main(String[] args){
 
 //      ******TESTING*****
@@ -23,19 +23,17 @@ public class Play {
         Player winner = new Player(startingMoney,emptyHand, "NONE");
 
 
-//      initialise deck and shuffle deck
+        /* Initialise and shuffle deck */
         Deck deck = new Deck();
         deck.shuffle();
 
-//      initialise community hand
-//        Hand communityHand = new Hand();
+        /* Initialise and deal 5 cards to community hand */
+        Hand communityHand = new Hand();
+        for(int i = 0; i<5; i++){
+            deck.dealTo(communityHand);
+        }
 
-//      deal 5 cards to community hand
-//        for(int i = 0; i<5; i++){
-//            deck.dealTo(communityHand);
-//        }
-
-//      create players with numbers as their name and deal 2 cards to each player
+        /* Initialise players (player name is a number) and deal 2 cards to every player's hand */
         ArrayList<Player> players = new ArrayList<>();
         for(int i = 0; i < numberOfPlayers; i++){
             Hand tempHand = new Hand();
@@ -66,7 +64,7 @@ public class Play {
 
         while(isPlaying){
             for(Player player:players){
-                choice = 0; //resets choice
+                choice = 0;      //resets choice
                 System.out.println();
                 System.out.println("!!!PLAYER " + player.name + "'s TURN!!!");
 //                System.out.println("Community hand   : " + communityHand.show());

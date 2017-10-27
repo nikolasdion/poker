@@ -6,7 +6,7 @@ import java.util.*;
  */
 
 public class Hand {
-    ArrayList<Card> cards = new ArrayList<Card>();
+    ArrayList<Card> cards = new ArrayList<Card>(); // the cards contained in the hand.
     int rank = 0;       // rank within the type of hand
     int type = 0;       // type, e.g. straight flush (9), four of a kind (8), .... pair(2), highest card(1)
 
@@ -47,10 +47,8 @@ public class Hand {
         return highest;
     }
 
-    /*
-    create an inventory of the hand, i.e. how many cards have certain value. returns an
-    array from 0 to 12, number of cards with value n is stored in index n-2.
-    */
+    /* Create an inventory of the hand, i.e. how many cards have certain value. returns an
+    * array from 0 to 12, number of cards with value n is stored in index n-2. */
     int[] inventory(){
         int[] inv = new int[13];
         for(Card card:this.cards){
@@ -60,13 +58,13 @@ public class Hand {
     }
 
     /* absolute rank of the hand, which if compared with other hand will give its standing
-     * wrt to that hand*/
+    * wrt to that hand*/
     int absoluteRank(){
         return (100 * this.type) + this.rank;
     }
 
     /* initialise process that checks what type of hand it is and what's the rank within the hand
-     * the value is saved within thw  */
+    * the value is saved within thw  */
     void checkTypeRank(){
         if(this.isStraightFlush()) {
 

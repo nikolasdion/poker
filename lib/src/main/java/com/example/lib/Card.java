@@ -5,7 +5,10 @@ package com.example.lib;
  */
 
 public class Card {
-
+    /*
+    Suit is represented as a number 1-4 from clubs to spades.
+    Value is represented as a number 2-14 from 2 to ace.
+    */
     public int value;
     public int suit;
 
@@ -21,10 +24,9 @@ public class Card {
     void setSuit(int suit){
         this.suit = suit;
     }
-    //suit is represented as a number 1-4 from clubs to spades
-    // value is represented as a number 2-14 from 2 to ace
 
-// convert card into a string understandable to player
+
+    /* Display card data as a string, e.g. 2H (two of hearts) for Card(2,3) */
     public String strCard(){
         String showValue = "";
         String showSuit = "";
@@ -56,7 +58,7 @@ public class Card {
         return showCardStr;
     }
 
-    // generate absolute value (i.e. rank) of the card
+    /* Generate absolute value (i.e. rank) of the card. The formula is 4*value + suit. */
     int absValue(){
          return this.value*4 + this.suit;
     }
