@@ -52,7 +52,7 @@ public class Hand {
     int[] inventory(){
         int[] inv = new int[13];
         for(Card card:this.cards){
-            inv[card.value - 2] += 1;
+            inv[card.getValue() - 2] += 1;
         }
         return inv;
     }
@@ -150,7 +150,7 @@ public class Hand {
         int diamonds = 0;
         int clubs = 0;
         for (Card card : cards) {
-            switch (card.suit) {
+            switch (card.getSuit()) {
                 case 1:
                     clubs = clubs + 1;
                     break;
@@ -237,16 +237,16 @@ public class Hand {
         return false;
     }
 
-    /*Selects best hand out of possible hands*/
-    void finalHand() {
-
-
-    }
-
-    /*create permutations with communityHand*/
-    ArrayList<Hand> permutations(Hand communityHand){
-        for{int i =0; i < hand.size
-        
-    }
+//    /*Selects best hand out of possible hands*/
+//    void finalHand() {
+//
+//
+//    }
+//
+//    /*create permutations with communityHand*/
+//    ArrayList<Hand> permutations(Hand communityHand){
+//        for{int i =0; i < hand.size
+//
+//    }
 
 }

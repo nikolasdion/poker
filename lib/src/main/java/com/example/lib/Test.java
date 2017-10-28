@@ -48,7 +48,7 @@ public class Test {
         Game game = new Game(2,100);
 
 
-        while(game.isPlaying){
+        while(game.getIsPlaying()){
             game.reset();
 
             game.dealPlayers();
@@ -63,7 +63,7 @@ public class Test {
 
             /*SHOWDOWN (if needed)*/
 
-            if(game.showdown) game.showdown();
+            if(game.getShowdown()) game.showdown();
 
             game.reward();
 

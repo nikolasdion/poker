@@ -9,18 +9,18 @@ import java.util.Scanner;
 public class Game {
     /*variables that do not change between games*/
 
-    public int numberOfPlayers;
-    public Player[] players;
-    public boolean isPlaying = true;
+    Scanner scanner = new Scanner( System.in );
+    private int numberOfPlayers;
+    private Player[] players;
+    private boolean isPlaying = true;
 
     /*variables that reset every game*/
-    public int pot;
-    public int currentBet;
-    public Deck deck;
-    public Hand communityHand = new Hand();
-    Scanner scanner = new Scanner( System.in );
-    public boolean showdown = false;
-    public int winner;
+    private int pot;
+    private int currentBet;
+    private Deck deck;
+    private Hand communityHand = new Hand();
+    private boolean showdown = false;
+    private int winner;
 
 
     /*Initialise game, creating array of players and shuffled deck,
@@ -34,49 +34,88 @@ public class Game {
         reset();
     }
 
-    public void setNumberOfPlayers(int numberOfPlayers){
+    /*GETTER AND SETTER METHODS*/
+
+    void setNumberOfPlayers(int numberOfPlayers){
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public void setPot(int pot){
-        this.pot = pot;
-    }
-
-    public void setCurrentBet(int currentBet){
-        this.currentBet = currentBet;
-    }
-
-    public void setWinner(int winner){
-        this.winner = winner;
-    }
-
-    public void setDeck(Deck deck){
-        this.deck = deck;
-    }
-
-    public void setPlayers(Player[] players){
+    void setPlayers(Player[] players){
         this.players = players;
     }
 
+    void setIsPlaying(boolean isPlaying) {
+        this.isPlaying = isPlaying;
+    }
+
+
+
+    void setPot(int pot){
+        this.pot = pot;
+    }
+
+    void setCurrentBet(int currentBet){
+        this.currentBet = currentBet;
+    }
+
+    void setDeck(Deck deck){
+        this.deck = deck;
+    }
+
+    void setCommunityHand(Hand communityHand){
+        this.communityHand = communityHand;
+    }
+
+    void setShowdown(boolean showdown){
+        this.showdown = showdown;
+    }
+
+    void setWinner(int winner){
+        this.winner = winner;
+    }
+
+
+    int getNumberOfPlayers(){return numberOfPlayers;}
+
+    Player[] getPlayers(){return players;}
+
+    boolean getIsPlaying(){return isPlaying;}
+
+    int getPot(){return pot;}
+
+    Deck getDeck(){return deck;}
+
+    Hand getcommunityHand(){return communityHand;}
+
+    boolean getShowdown(){return showdown;}
+
+    int getWinner(){return winner;}
+
+
+
+    /*METHODS START HERE*/
+
+
+
     public void displayStatus(){
-        System.out.println("Community Hand   : " + this.communityHand.show());
+        System.out.println("Community Hand   : " + communityHand.show());
         System.out.println("Current bet      : " + currentBet);
         System.out.println("Pot              : " + pot);
     }
 
     /* Deals 2 cards to each player's hand.*/
     public void dealPlayers(){
-        for(int playerIndex = 0; playerIndex < this.numberOfPlayers; playerIndex++ ) {
+        for(int playerIndex = 0; playerIndex < numberOfPlayers; playerIndex++ ) {
             Hand tempHand = new Hand();
             for(int i = 0; i<2; i++) {
-                this.deck.dealTo(tempHand);
+                deck.dealTo(tempHand);
             }
-            this.players[playerIndex].setHand(tempHand);
+            players[playerIndex].setHand(tempHand);
         }
     }
 
     public void dealCommunity(){
-        this.deck.dealTo(this.communityHand);
+        deck.dealTo(communityHand);
     }
 
     public void playerTurn(int index){
@@ -84,40 +123,40 @@ public class Game {
 
         players[index].setChoice(0);
         System.out.println();
-        System.out.println("!!!PLAYER " + this.players[index].name + "'s TURN!!!");
+        System.out.println("!!!PLAYER " + players[index].name + "'s TURN!!!");
         System.out.println("Community hand   : " + communityHand.show());
         System.out.println("Current bet      : " + currentBet);
         System.out.println("Pot              : " + pot);
-        System.out.println("Player " + this.players[index].name + "'s hand  : "
-                + this.players[index].hand.show());
-        System.out.println("Player " + this.players[index].name + "'s money : "
-                + this.players[index].money);
-        while(this.players[index].choice == 0) {
+        System.out.println("Player " + players[index].name + "'s hand  : "
+                + players[index].hand.show());
+        System.out.println("Player " + players[index].name + "'s money : "
+                + players[index].money);
+        while(players[index].choice == 0) {
             System.out.println("(1: raise, 2: call, 3: fold)");
-            System.out.print("Player " + this.players[index].name + "'s move  : ");
-            this.players[index].setChoice(scanner.nextInt());
-            switch (this.players[index].choice) {
+            System.out.print("Player " + players[index].name + "'s move  : ");
+            players[index].setChoice(scanner.nextInt());
+            switch (players[index].choice) {
                 case 1: {
                     System.out.print("Raise by: ");
                     int raise = scanner.nextInt();
-                    if (this.players[index].money < this.currentBet + raise) {
+                    if (players[index].money < currentBet + raise) {
                         System.out.println("Insufficient money to raise.");
-                        this.players[index].setChoice(0);
+                        players[index].setChoice(0);
                         break;
                     }
-                    this.setCurrentBet(this.currentBet + raise);
-                    this.setPot(pot + this.currentBet);
-                    this.players[index].setMoney(this.players[index].money - this.currentBet);
+                    setCurrentBet(currentBet + raise);
+                    setPot(pot + currentBet);
+                    players[index].setMoney(players[index].money - currentBet);
                     break;
                 }
                 case 2: {
-                    if (this.players[index].money < this.currentBet) {
+                    if (players[index].money < currentBet) {
                         System.out.println("Insufficient money to call.");
-                        this.players[index].setChoice(0);
+                        players[index].setChoice(0);
                         break;
                     }
-                    this.setPot(this.pot + this.currentBet);
-                    this.players[index].setMoney(this.players[index].money - this.currentBet);
+                    setPot(pot + currentBet);
+                    players[index].setMoney(players[index].money - currentBet);
                     System.out.println("Called.");
                     break;
                 }
@@ -127,7 +166,7 @@ public class Game {
                 }
                 default: {
                     System.out.println("Invalid input.");
-                    this.players[index].setChoice(0);
+                    players[index].setChoice(0);
                 }
             }
         }
