@@ -123,40 +123,40 @@ public class Game {
 
         players[index].setChoice(0);
         System.out.println();
-        System.out.println("!!!PLAYER " + players[index].name + "'s TURN!!!");
+        System.out.println("!!!PLAYER " + players[index].getName() + "'s TURN!!!");
         System.out.println("Community hand   : " + communityHand.show());
         System.out.println("Current bet      : " + currentBet);
         System.out.println("Pot              : " + pot);
-        System.out.println("Player " + players[index].name + "'s hand  : "
-                + players[index].hand.show());
-        System.out.println("Player " + players[index].name + "'s money : "
-                + players[index].money);
-        while(players[index].choice == 0) {
+        System.out.println("Player " + players[index].getName() + "'s hand  : "
+                + players[index].getHand().show());
+        System.out.println("Player " + players[index].getName() + "'s money : "
+                + players[index].getMoney());
+        while(players[index].getChoice() == 0) {
             System.out.println("(1: raise, 2: call, 3: fold)");
-            System.out.print("Player " + players[index].name + "'s move  : ");
+            System.out.print("Player " + players[index].getName() + "'s move  : ");
             players[index].setChoice(scanner.nextInt());
-            switch (players[index].choice) {
+            switch (players[index].getChoice()) {
                 case 1: {
                     System.out.print("Raise by: ");
                     int raise = scanner.nextInt();
-                    if (players[index].money < currentBet + raise) {
+                    if (players[index].getMoney() < currentBet + raise) {
                         System.out.println("Insufficient money to raise.");
                         players[index].setChoice(0);
                         break;
                     }
                     setCurrentBet(currentBet + raise);
                     setPot(pot + currentBet);
-                    players[index].setMoney(players[index].money - currentBet);
+                    players[index].setMoney(players[index].getMoney() - currentBet);
                     break;
                 }
                 case 2: {
-                    if (players[index].money < currentBet) {
+                    if (players[index].getMoney() < currentBet) {
                         System.out.println("Insufficient money to call.");
                         players[index].setChoice(0);
                         break;
                     }
                     setPot(pot + currentBet);
-                    players[index].setMoney(players[index].money - currentBet);
+                    players[index].setMoney(players[index].getMoney() - currentBet);
                     System.out.println("Called.");
                     break;
                 }
@@ -180,8 +180,8 @@ public class Game {
         int numberFolded = 0;
         int numberCalled = 0;
         for(Player player:players){
-            if(player.choice == 3) numberFolded++;
-            else if(player.choice == 2) numberCalled++;
+            if(player.getChoice() == 3) numberFolded++;
+            else if(player.getChoice() == 2) numberCalled++;
         }
         if(numberOfPlayers == (numberCalled + numberFolded + 1)) {return true;
         }
@@ -194,7 +194,7 @@ public class Game {
     public boolean checkFolded(){
         int numberFolded = 0;
         for(Player player:players){
-            if(player.choice == 3) numberFolded++;
+            if(player.getChoice() == 3) numberFolded++;
         }
         if(numberOfPlayers == numberFolded + 1) return true;
         else return false;
@@ -215,7 +215,7 @@ public class Game {
 
 
                 for(int index = 0; index < numberOfPlayers; index++){
-                    if(players[index].choice == 3) return; // skip player if she has folded
+                    if(players[index].getChoice() == 3) return; // skip player if she has folded
 
                     if(checkFolded()){
                         winner = index;
@@ -243,13 +243,17 @@ public class Game {
         }
     }
 
+
+    /*Set this to true no winner is declared after the last round, compares remaining players' hands*/
     public void showdown(){
         int highest = 0;
         System.out.println("SHOWDOWN");
         for(int index = 0; index < numberOfPlayers; index++) {
-            System.out.println("Player abs: "+ players[index].hand.absoluteRank());
-            if (players[index].hand.absoluteRank() > highest) {
-                winner = index;
+            if(players[index].getChoice() != 3){
+                System.out.println("Player abs: "+ players[index].getHand().absoluteRank());
+                if (players[index].getHand().absoluteRank() > highest) {
+                    winner = index;
+                }
             }
         }
     }
@@ -257,8 +261,8 @@ public class Game {
     /*Rewards winner of current game with money in the pot*/
     public void reward(){
         System.out.println("WINNER" + winner);
-        System.out.println("The winner is Player " + players[winner].name);
-        players[winner].setMoney(players[winner].money + pot);
+        System.out.println("The winner is Player " + players[winner].getName());
+        players[winner].setMoney(players[winner].getMoney() + pot);
         pot = 0;
     }
 

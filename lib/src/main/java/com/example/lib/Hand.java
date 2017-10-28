@@ -7,14 +7,14 @@ import java.util.*;
 
 public class Hand {
     ArrayList<Card> cards = new ArrayList<Card>(); // the cards contained in the hand.
-    int rank = 0;       // rank within the type of hand
-    int type = 0;       // type, e.g. straight flush (9), four of a kind (8), .... pair(2), highest card(1)
+    private int rank;       // rank within the type of hand
+    private int type;       // type, e.g. straight flush (9), four of a kind (8), .... pair(2), highest card(1)
 
     /* Initialise a hand with attribute cards. */
     Hand() {
         this.cards = cards;
-        this.rank = rank;
-        this.type = type;
+        this.rank = 0;
+        this.type = 0;
     }
 
     /* Return a string displaying the cards in the hand. */
