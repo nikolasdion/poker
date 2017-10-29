@@ -10,7 +10,7 @@ public class Game {
     /*variables that do not change between games*/
 
     Scanner scanner = new Scanner( System.in );
-    private int numberOfPlayers;
+    private int numberOfPlayers = 0;
     private Player[] players;
     private boolean isPlaying = true;
 
@@ -85,7 +85,7 @@ public class Game {
 
     Deck getDeck(){return deck;}
 
-    Hand getcommunityHand(){return communityHand;}
+    Hand getCommunityHand(){return communityHand;}
 
     boolean getShowdown(){return showdown;}
 
