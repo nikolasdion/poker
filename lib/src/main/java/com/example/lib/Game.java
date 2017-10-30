@@ -230,7 +230,9 @@ public class Game {
 
             }
 
-            dealCommunity(); //deal one card to community hand after the end of each round
+            if(round <3){
+                dealCommunity(); //deal one card to community hand after the end of each round
+            }
 
             System.out.println();
             System.out.println("Round has ended. Another card dealt to community hand.");
@@ -247,10 +249,16 @@ public class Game {
     /*Set this to true no winner is declared after the last round, compares remaining players' hands*/
     public void showdown(){
         int highest = 0;
-        System.out.println("SHOWDOWN");
+        System.out.println("!!! SHOWDOWN !!!");
         for(int index = 0; index < numberOfPlayers; index++) {
             if(players[index].getChoice() != 3){
-                System.out.println("Player abs: "+ players[index].getHand().absoluteRank());
+                Hand tempHand = players[index].getHand();
+                for(Card communityCard:communityHand.getCards()) {
+                    tempHand.add(communityCard);
+                }
+                players[index].setHand(tempHand);
+                System.out.println("Player " + players[index].getName() + "'s best hand: "+ players[index].getHand().getBestHand().show());
+                System.out.println("Player " + players[index].getName() + "'s absolute : "+ players[index].getHand().getBestHand().absoluteRank());
                 if (players[index].getHand().absoluteRank() > highest) {
                     winner = index;
                 }
@@ -260,10 +268,18 @@ public class Game {
 
     /*Rewards winner of current game with money in the pot*/
     public void reward(){
-        System.out.println("WINNER" + winner);
+        System.out.println();
+        System.out.println("!!!!!!THE GAME HAS ENDED!!!!!");
         System.out.println("The winner is Player " + players[winner].getName());
+        System.out.println(pot + " has been added to Player " + players[winner].getName());
         players[winner].setMoney(players[winner].getMoney() + pot);
         pot = 0;
+        System.out.println();
+        for(Player player:players){
+            System.out.println("Player " + player.getName() + "'s money : "
+                    + player.getMoney());
+        }
+        System.out.println();
     }
 
     /*Setup for a new game*/
@@ -303,7 +319,6 @@ public class Game {
                 default:
                     System.out.println("Invalid input.");
                     cont = 0;
-
             }
         }
     }

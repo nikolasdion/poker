@@ -6,15 +6,28 @@ import java.util.*;
  */
 
 public class Hand {
-    ArrayList<Card> cards = new ArrayList<Card>(); // the cards contained in the hand.
+
+    ArrayList<Card> cards = new ArrayList<>(); // the cards contained in the hand.
     private int rank;       // rank within the type of hand
     private int type;       // type, e.g. straight flush (9), four of a kind (8), .... pair(2), highest card(1)
 
-    /* Initialise a hand with attribute cards. */
     Hand() {
+        this.rank = 0;
+        this.type = 0;
+    }
+
+    Hand(ArrayList<Card> cards) {
         this.cards = cards;
         this.rank = 0;
         this.type = 0;
+    }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(ArrayList<Card> cards) {
+        this.cards = cards;
     }
 
     /* Return a string displaying the cards in the hand. */
@@ -29,6 +42,10 @@ public class Hand {
     /* Add a card to the hand. */
     void add(Card card) {
         this.cards.add(card);
+    }
+
+    Card get(int i){
+        return cards.get(i);
     }
 
     /* Show the number of cards in the hand */
@@ -55,6 +72,54 @@ public class Hand {
             inv[card.getValue() - 2] += 1;
         }
         return inv;
+    }
+
+
+    /* Out of the cards in the hand, return the 5-card hand with the highest rank*/
+    Hand getBestHand(){
+        int highest = 0;
+        Hand highestHand = new Hand();
+        for(Hand combination:combinations(5)){
+            if(combination.absoluteRank()> highest){
+                highest = combination.absoluteRank();
+                highestHand = combination;
+            }
+        }
+        return highestHand;
+    }
+
+    /* Out of the cards in the hand, return an ArrayList of combinations of k different hands
+     defined recursively*/
+    ArrayList<Hand> combinations(int k){
+        ArrayList<Hand> combinations = new ArrayList<>();
+        if(k == 1){
+            for(Card card:cards){
+                Hand tempHand = new Hand();
+                tempHand.add(card);
+                combinations.add(tempHand);
+            }
+            return combinations;
+        }
+
+        else if(k == cards.size()){
+            combinations.add(this);
+            return combinations;
+        }
+
+        for(int i = 0; i < size() - k + 1; i++ ){
+            Card head = get(i);
+            Hand tail = new Hand();
+            for(int j = i+1; j < size(); j++){
+                tail.add(get(j));
+            }
+            ArrayList<Hand> tailComb = tail.combinations(k - 1);
+            for(Hand hand:tailComb){
+                hand.add(head);
+                combinations.add(hand);
+            }
+        }
+
+        return combinations;
     }
 
     /* absolute rank of the hand, which if compared with other hand will give its standing
@@ -243,10 +308,7 @@ public class Hand {
 //
 //    }
 //
-//    /*create permutations with communityHand*/
-//    ArrayList<Hand> permutations(Hand communityHand){
-//        for{int i =0; i < hand.size
-//
-//    }
+
+
 
 }
