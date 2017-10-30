@@ -107,21 +107,24 @@ public class Game {
     public void dealPlayers(){
         for(int playerIndex = 0; playerIndex < numberOfPlayers; playerIndex++ ) {
             Hand tempHand = new Hand();
-            for(int i = 0; i<2; i++) {
+            for(int i = 0; i<2; i++) { //deal two cards to each player
                 deck.dealTo(tempHand);
             }
             players[playerIndex].setHand(tempHand);
         }
+        System.out.println("Two cards were dealt to each player.");
     }
 
     public void dealCommunity(){
         deck.dealTo(communityHand);
+        System.out.println("A card was dealt to community hand.");
     }
 
-    public void playerTurn(int index){
+    public void playerTurn(int index, int noOfRaises){
 //      check if player has folded
 
         players[index].setChoice(0);
+
         System.out.println();
         System.out.println("!!!PLAYER " + players[index].getName() + "'s TURN!!!");
         System.out.println("Community hand   : " + communityHand.show());
@@ -131,12 +134,18 @@ public class Game {
                 + players[index].getHand().show());
         System.out.println("Player " + players[index].getName() + "'s money : "
                 + players[index].getMoney());
+
         while(players[index].getChoice() == 0) {
             System.out.println("(1: raise, 2: call, 3: fold)");
             System.out.print("Player " + players[index].getName() + "'s move  : ");
             players[index].setChoice(scanner.nextInt());
             switch (players[index].getChoice()) {
                 case 1: {
+                    if (noOfRaises >2){
+                        System.out.println("Cannot raise further in this round.");
+                        players[index].setChoice(0);
+                        break;
+                    }
                     System.out.print("Raise by: ");
                     int raise = scanner.nextInt();
                     if (players[index].getMoney() < currentBet + raise) {
@@ -147,6 +156,7 @@ public class Game {
                     setCurrentBet(currentBet + raise);
                     setPot(pot + currentBet);
                     players[index].setMoney(players[index].getMoney() - currentBet);
+                    noOfRaises++;
                     break;
                 }
                 case 2: {
@@ -211,41 +221,45 @@ public class Game {
     public void bettingStage(){
         for(int round = 1; round < 4; round++){
 
-            thisRound: //break if everyone has called or folded
-            for(int turn = 1; turn < 4; turn++){
+            bettingRound();
 
-
-
-                for(int index = 0; index < numberOfPlayers; index++){
-
-                    if(checkFolded()){
-                        winner = index;
-                        return; // end betting stage if every player but one has folded
-                    }
-
-                    if(nextRound()) break thisRound; // if everyone has called/folded but one, proceed to next round
-
-
-                    if(players[index].getChoice() == 3){
-                         // skip player if she has folded
-                        } else {
-                        playerTurn(index);
-                    }
-                }
-
+            if(winner != 0){
+                return; //end betting stage if there is already a winner
             }
+
+            System.out.println();
+            System.out.println("Round has ended.");
 
             if(round <3){
                 dealCommunity(); //deal one card to community hand after the end of each round
             }
-
-            System.out.println();
-            System.out.println("Round has ended. Another card dealt to community hand.");
             displayStatus();
             resetChoices(); //reset everyone's choice to 0
 
             if(round == 3) showdown = true;
+        }
+    }
 
+    public void bettingRound(){
+        int noOfRaises = 0;
+
+        while(noOfRaises <4){
+            for(int index = 0; index < numberOfPlayers; index++){
+
+                if(checkFolded()){
+                    winner = index;
+                    return; // end betting stage if every player but one has folded
+                }
+
+                if(nextRound()) return; // if everyone has called/folded but one, proceed to next round
+
+
+                if(players[index].getChoice() == 3){
+                    // skip player if she has folded
+                } else {
+                    playerTurn(index, noOfRaises);
+                }
+            }
 
         }
     }

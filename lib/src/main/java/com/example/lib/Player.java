@@ -11,6 +11,7 @@ public class Player {
     private String name;
     private int choice;
 
+
     Player(int money, String name){
         setMoney(money);
         setHand(hand);
