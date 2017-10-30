@@ -7,8 +7,8 @@ import java.util.Scanner;
  */
 
 public class Game {
-    /*variables that do not change between games*/
 
+    /*variables that do not change between games*/
     Scanner scanner = new Scanner( System.in );
     private int numberOfPlayers;
     private Player[] players;
@@ -240,6 +240,7 @@ public class Game {
         }
     }
 
+    /*A betting round */
     public void bettingRound(){
         int noOfRaises = 0;
 

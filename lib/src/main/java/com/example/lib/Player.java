@@ -10,37 +10,48 @@ public class Player {
     private Hand hand = new Hand();
     private String name;
     private int choice;
+    private int bet;
 
 
     Player(int money, String name){
         setMoney(money);
         setName(name);
         setChoice(0);
+        setBet(0);
     }
 
-    void setMoney(int money){
+    public void setMoney(int money){
         this.money = money;
     }
 
-    void setHand(Hand hand){
+    public void setHand(Hand hand){
         this.hand = hand;
     }
 
-    void setName(String name){
+    public void setName(String name){
         this.name = name;
     }
 
-    void setChoice(int choice){
+    public void setChoice(int choice){
         this.choice = choice;
     }
 
-    int getMoney(){return money;}
+    public void setBet(int bet) {
+        this.bet = bet;
+    }
 
-    Hand getHand(){return hand;}
+    public int getMoney(){return money;}
 
-    String getName(){return name;}
+    public Hand getHand(){return hand;}
 
-    int getChoice(){return choice;}
+    public String getName(){return name;}
+
+    public int getChoice(){return choice;}
+
+    public int getBet() {
+        return bet;
+    }
+
 
 
 }
