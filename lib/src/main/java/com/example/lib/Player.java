@@ -11,6 +11,7 @@ public class Player {
     private String name;
     private int choice;
     private int bet;
+    private boolean hasFolded;
 
 
     Player(int money, String name){
@@ -18,6 +19,7 @@ public class Player {
         setName(name);
         setChoice(0);
         setBet(0);
+        setFolded(false);
     }
 
     public void setMoney(int money){
@@ -40,6 +42,10 @@ public class Player {
         this.bet = bet;
     }
 
+    public void setFolded(boolean hasFolded) {
+        this.hasFolded = hasFolded;
+    }
+
     public int getMoney(){return money;}
 
     public Hand getHand(){return hand;}
@@ -51,6 +57,11 @@ public class Player {
     public int getBet() {
         return bet;
     }
+
+    public boolean hasFolded() {
+        return hasFolded;
+    }
+
 
 
 

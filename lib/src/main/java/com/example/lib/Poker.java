@@ -6,7 +6,7 @@ public class Poker {
     public static void main(String[] args){
 
 
-        Game game = new Game(2,100);
+        Game game = new Game(3,1000);
 
         while(game.isPlaying()){
             game.reset();
