@@ -44,7 +44,7 @@ public class Game {
         this.players = players;
     }
 
-    void setIsPlaying(boolean isPlaying) {
+    void setPlaying(boolean isPlaying) {
         this.isPlaying = isPlaying;
     }
 
@@ -79,7 +79,7 @@ public class Game {
 
     Player[] getPlayers(){return players;}
 
-    boolean getIsPlaying(){return isPlaying;}
+    boolean isPlaying(){return isPlaying;}
 
     int getPot(){return pot;}
 
@@ -200,12 +200,14 @@ public class Game {
         else return false;
     }
 
+    /*Reset the choice parameter of players after each round of betting*/
     public void resetChoices(){
         for(Player player:players){
             player.setChoice(0);
         }
     }
 
+    /*The betting stage of the game, consisting of maximum 3 rounds of 3 turns each*/
     public void bettingStage(){
         for(int round = 1; round < 4; round++){
 
@@ -215,7 +217,6 @@ public class Game {
 
 
                 for(int index = 0; index < numberOfPlayers; index++){
-                    if(players[index].getChoice() == 3) return; // skip player if she has folded
 
                     if(checkFolded()){
                         winner = index;
@@ -225,7 +226,11 @@ public class Game {
                     if(nextRound()) break thisRound; // if everyone has called/folded but one, proceed to next round
 
 
-                    playerTurn(index);
+                    if(players[index].getChoice() == 3){
+                         // skip player if she has folded
+                        } else {
+                        playerTurn(index);
+                    }
                 }
 
             }
@@ -245,8 +250,7 @@ public class Game {
         }
     }
 
-
-    /*Set this to true no winner is declared after the last round, compares remaining players' hands*/
+    /*Set this to true if no winner is declared after the last round, compares remaining players' hands*/
     public void showdown(){
         int highest = 0;
         System.out.println("!!! SHOWDOWN !!!");
@@ -282,7 +286,7 @@ public class Game {
         System.out.println();
     }
 
-    /*Setup for a new game*/
+    /*Setup for a new game after continuing*/
     public void reset(){
         resetChoices();
         setWinner(-1);

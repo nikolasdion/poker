@@ -18,23 +18,27 @@ public class Test {
 //
 
         /* Test hand rank generation. */
-        Hand tempHand = new Hand();
-        Card card1 = new Card(2,2);
-        Card card2 = new Card(3,2);
-        Card card3 = new Card(4,3);
-        Card card4 = new Card(7,2);
-        Card card5 = new Card(6,2);
-        Card card6 = new Card(12,1);
-        Card card7 = new Card(5,2);
+//        Hand tempHand = new Hand();
+//        Card card1 = new Card(2,2);
+//        Card card2 = new Card(3,2);
+//        Card card3 = new Card(4,3);
+//        Card card4 = new Card(7,2);
+//        Card card5 = new Card(6,2);
+//        Card card6 = new Card(12,1);
+//        Card card7 = new Card(5,2);
+//
+//        tempHand.add(card1);
+//        tempHand.add(card2);
+//        tempHand.add(card3);
+//        tempHand.add(card4);
+//        tempHand.add(card5);
+//        tempHand.add(card6);
+//        tempHand.add(card7);
+//        System.out.println(tempHand.show());
 
-        tempHand.add(card1);
-        tempHand.add(card2);
-        tempHand.add(card3);
-        tempHand.add(card4);
-        tempHand.add(card5);
-        tempHand.add(card6);
-        tempHand.add(card7);
-        System.out.println(tempHand.show());
+        Deck deck = new Deck();
+
+        Hand tempHand = new Hand(deck.getCards());
 
         ArrayList<Hand> combi = tempHand.combinations(5);
 

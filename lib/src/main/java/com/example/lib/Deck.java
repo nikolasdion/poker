@@ -6,7 +6,7 @@ import java.util.*;
  */
 
 public class Deck{
-    static ArrayList<Card> cards = new ArrayList<Card>();
+    private static ArrayList<Card> cards = new ArrayList<Card>();
 
     /* When initialised, a deck has 52 cards from 2 of clubs to ace of spades (unshuffled, arranged
      * by suits. */
@@ -21,6 +21,14 @@ public class Deck{
 
     Deck(){
         this.cards = cards;
+    }
+
+    public static ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public static void setCards(ArrayList<Card> cards) {
+        Deck.cards = cards;
     }
 
     void shuffle() {

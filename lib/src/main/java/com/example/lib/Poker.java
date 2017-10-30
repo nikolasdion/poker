@@ -11,7 +11,7 @@ public class Poker {
 
         Game game = new Game(2,100);
 
-        while(game.getIsPlaying()){
+        while(game.isPlaying()){
             game.reset();
 
             game.dealPlayers();
