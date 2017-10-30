@@ -16,19 +16,19 @@ public class Card {
         setSuit(suit);
     }
 
-    void setValue(int value){
+    public void setValue(int value){
         this.value = value;
     }
 
-    void setSuit(int suit){
+    public void setSuit(int suit){
         this.suit = suit;
     }
 
-    int getValue(){
+    public int getValue(){
         return value;
     }
 
-    int getSuit(){
+    public int getSuit(){
         return suit;
     }
 
@@ -37,7 +37,7 @@ public class Card {
         String showValue = "";
         String showSuit = "";
 
-        if((this.value > 1) && (this.value < 11)){
+        if((value > 1) && (value < 11)){
             showValue = String.valueOf(this.value);
         } else if (this.value == 11) {
             showValue = "J";
@@ -59,9 +59,7 @@ public class Card {
             showSuit = "S";
         }
 
-        String showCardStr = showValue + showSuit;
-
-        return showCardStr;
+        return showValue + showSuit;
     }
 
     /* Generate absolute value (i.e. rank) of the card. The formula is 4*value + suit. */

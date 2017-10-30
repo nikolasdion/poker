@@ -10,7 +10,7 @@ public class Game {
     /*variables that do not change between games*/
 
     Scanner scanner = new Scanner( System.in );
-    private int numberOfPlayers = 0;
+    private int numberOfPlayers;
     private Player[] players;
     private boolean isPlaying = true;
 
@@ -28,6 +28,7 @@ public class Game {
     Game(int numberOfPlayers, int initialMoney){
         setNumberOfPlayers(numberOfPlayers);
         setPlayers(new Player[numberOfPlayers]);
+        setPlaying(true);
         for(int i = 0; i < this.numberOfPlayers; i++){
             this.players[i] = new Player (initialMoney, String.valueOf(i+1));
         }
@@ -90,7 +91,6 @@ public class Game {
     boolean getShowdown(){return showdown;}
 
     int getWinner(){return winner;}
-
 
 
     /*METHODS START HERE*/
@@ -304,7 +304,7 @@ public class Game {
     public void reset(){
         resetChoices();
         setWinner(-1);
-        showdown = false;
+        setShowdown(false);
         setCurrentBet(0);
         setPot(0);
 
@@ -318,7 +318,7 @@ public class Game {
             player.setChoice(0);
         }
 
-        communityHand = emptyHand;
+        setCommunityHand(emptyHand);
     }
 
     /*Checks whether players want to continue playing another game after someone wins current game*/

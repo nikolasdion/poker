@@ -6,36 +6,41 @@ import java.util.*;
  */
 
 public class Deck{
-    private static ArrayList<Card> cards = new ArrayList<Card>();
+    private ArrayList<Card> cards = new ArrayList<Card>();
 
-    /* When initialised, a deck has 52 cards from 2 of clubs to ace of spades (unshuffled, arranged
-     * by suits. */
-    static{
+    /* When initialised without argument, a deck has 52 cards from 2 of clubs to ace of spades
+    * unshuffled, arranged by suits. */
+    Deck(){
+        ArrayList<Card> unshuffledDeck = new ArrayList<>();
         for (int i = 1; i < 5; i++){
             for (int j = 2; j < 15; j++) {
                 Card temp = new Card(j, i);
-                cards.add(temp);
+                unshuffledDeck.add(temp);
             }
-        }   
+        }
+        setCards(unshuffledDeck);
     }
 
-    Deck(){
-        this.cards = cards;
+    /* We can also initialise a deck with specified cards (for playing with modified deck */
+    Deck(ArrayList _cards){
+        setCards(_cards);
     }
 
-    public static ArrayList<Card> getCards() {
+    public ArrayList<Card> getCards() {
         return cards;
     }
 
-    public static void setCards(ArrayList<Card> cards) {
-        Deck.cards = cards;
+    public void setCards(ArrayList<Card> cards) {
+        this.cards = cards;
     }
 
+    /*Shuffle deck*/
     void shuffle() {
         Collections.shuffle(this.cards);
         System.out.println("Deck shuffled.");
     }
 
+    /*Deals one card to specified hand*/
     void dealTo(Hand hand){
         boolean add = hand.cards.add(this.cards.remove(0));
     }

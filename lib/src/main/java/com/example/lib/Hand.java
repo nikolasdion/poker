@@ -12,14 +12,30 @@ public class Hand {
     private int type;       // type, e.g. straight flush (9), four of a kind (8), .... pair(2), highest card(1)
 
     Hand() {
-        this.rank = 0;
-        this.type = 0;
+        setRank(0);
+        setType(0);
     }
 
     Hand(ArrayList<Card> cards) {
-        this.cards = cards;
-        this.rank = 0;
-        this.type = 0;
+        setCards(cards);
+        setRank(0);
+        setType(0);
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public ArrayList<Card> getCards() {
