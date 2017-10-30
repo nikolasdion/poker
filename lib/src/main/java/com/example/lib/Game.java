@@ -150,14 +150,14 @@ public class Game {
                     }
                     System.out.print("Raise by: ");
                     int raise = scanner.nextInt();
-                    if (players[index].getMoney() < currentBet + raise) {
+                    if (players[index].getMoney() + players[index].getBet() < currentBet + raise) {
                         System.out.println("Insufficient money to raise.");
                         players[index].setChoice(0);
                         break;
                     }
                     setCurrentBet(currentBet + raise);
-                    setPot(pot + currentBet);
-                    players[index].setMoney(players[index].getMoney() - currentBet);
+                    players[index].setMoney(players[index].getMoney() + players[index].getBet() - currentBet );
+                    players[index].setBet(currentBet);
                     noOfRaises++;
                     break;
                 }
@@ -167,12 +167,14 @@ public class Game {
                         players[index].setChoice(0);
                         break;
                     }
-                    setPot(pot + currentBet);
-                    players[index].setMoney(players[index].getMoney() - currentBet);
+                    players[index].setMoney(players[index].getMoney() + players[index].getBet()- currentBet);
+                    players[index].setBet(currentBet);
                     System.out.println("Called.");
                     break;
                 }
                 case 3: {
+                    pot = pot + players[index].getBet();
+                    players[index].setBet(0);
                     System.out.println("Folded.");
                     break;
                 }
@@ -186,20 +188,20 @@ public class Game {
 
     }
 
-//    /*Check if after a turn proceeds to the next turn (no extra community card dealt)
-//    or next round (deal one more to community hand). True if everyone has either called or folded*/
-//    public boolean nextRound(){
-//        int numberFolded = 0;
-//        int numberCalled = 0;
-//        for(Player player:players){
-//            if(player.getChoice() == 3) numberFolded++;
-//            else if(player.getChoice() == 2) numberCalled++;
-//        }
-//        if(numberOfPlayers == (numberCalled + numberFolded + 1)) {return true;
-//        }
-//        //checked at the start of every player's turn, in case a full cycle has been completed and/*
-//            // everyone has called/folded. -1 because the current player would've been the one raised*/
-//        else return false;
+    /*Check if after a turn proceeds to the next turn (no extra community card dealt)
+    or next round (deal one more to community hand). True if everyone has either called or folded*/
+    public boolean checkCalledFolded(){
+        int numberFolded = 0;
+        int numberCalled = 0;
+        for(Player player:players){
+            if(player.getChoice() == 3) numberFolded++;
+            else if(player.getChoice() == 2) numberCalled++;
+        }
+        if(numberOfPlayers == (numberCalled + numberFolded)) {return true;
+        }
+        //checked at the start of every player's turn, in case a full cycle has been completed and/*
+            // everyone has called/folded. -1 because the current player would've been the one raised*/
+        else return false;
     }
 
     /*Check if everyone has folded (used at the start of every playerturn)*/
@@ -225,7 +227,7 @@ public class Game {
 
             bettingRound();
 
-            if(winner != 0){
+            if(winner != -1){
                 return; //end betting stage if there is already a winner
             }
 
@@ -244,10 +246,9 @@ public class Game {
 
     /*A betting round */
     public void bettingRound(){
-        int currentRaiser = 0;
+        int currentRaiser = -1;
         int noOfRaises = 0;
 
-        thisRound: //break when a complete cycle has passed between the last raise (i.e. the current player was the last raiser)
         while(noOfRaises < 4){
             for(int index = 0; index < numberOfPlayers; index++){
 
@@ -256,7 +257,7 @@ public class Game {
                     return; // end betting stage if every player but one has folded
                 }
 
-                if(currentRaiser == index){
+                if(currentRaiser == index || checkCalledFolded()){
                     return;
                 }
 
@@ -264,6 +265,8 @@ public class Game {
                     // skip player if she has folded
                 } else {
                     playerTurn(index, noOfRaises);
+                    /*if player raises, change the status of current raiser to this player
+                    * and track number of raises*/
                     if(players[index].getChoice()== 1){
                         currentRaiser = index;
                         noOfRaises ++;
@@ -296,6 +299,12 @@ public class Game {
 
     /*Rewards winner of current game with money in the pot*/
     public void reward(){
+        /*Empty every player's bet into the pot (later given to the winner)*/
+        for(Player player:players){
+            pot += player.getBet();
+            player.setBet(0);
+        }
+
         System.out.println();
         System.out.println("!!!!!!THE GAME HAS ENDED!!!!!");
         System.out.println("The winner is Player " + players[winner].getName());
