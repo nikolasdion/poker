@@ -42,9 +42,9 @@ public class Test {
 
         ArrayList<Hand> combi = tempHand.combinations(5);
 
-        for(Hand cards:combi){
-            System.out.println("Cards collection " + combi.indexOf(cards) + " " + cards.show());
-        }
+//        for(Hand cards:combi){
+//            System.out.println("Cards collection " + combi.indexOf(cards) + " " + cards.show());
+//        }
 
         System.out.println(" Best Hand: " +  tempHand.getBestHand().show() + ";  Score:  " + tempHand.getBestHand().absoluteRank());
 

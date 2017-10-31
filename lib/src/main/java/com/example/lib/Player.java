@@ -5,12 +5,11 @@ package com.example.lib;
  */
 
 public class Player {
-    /* a player has two attributes: cards in her hand and the money she has */
     private int money;
     private Hand hand = new Hand();
     private String name;
-    private int choice;
-    private int bet;
+    private int choice; // Player's action (1: raise, 2: check, 3: fold)
+    private int bet; // The amount of money the player is betting in the current game.
     private boolean hasFolded;
 
 

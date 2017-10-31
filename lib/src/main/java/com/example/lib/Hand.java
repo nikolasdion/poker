@@ -7,35 +7,21 @@ import java.util.*;
 
 public class Hand {
 
-    ArrayList<Card> cards = new ArrayList<>(); // the cards contained in the hand.
-    private int rank;       // rank within the type of hand
-    private int type;       // type, e.g. straight flush (9), four of a kind (8), .... pair(2), highest card(1)
+    ArrayList<Card> cards = new ArrayList<>(); // Cards contained in the hand.
+    private int type;  //  Type, e.g. straight flush (9), four of a kind (8), .... pair(2), highest card(1)
+    private int rank;  //  Rank within the type of hand
 
+    /* By default initialise an empty hand. */
     Hand() {
-        setRank(0);
-        setType(0);
+        type = 0;
+        rank = 0;
     }
 
+    /* Construct a hand with specified cards. */
     Hand(ArrayList<Card> cards) {
-        setCards(cards);
-        setRank(0);
-        setType(0);
-    }
-
-    public int getRank() {
-        return rank;
-    }
-
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
+        this.cards = cards;
+        type = 0;
+        rank = 0;
     }
 
     public ArrayList<Card> getCards() {
@@ -49,50 +35,29 @@ public class Hand {
     /* Return a string displaying the cards in the hand. */
     String show() {
         String temp = "";
-        for (int i = 0; i < this.cards.size(); i++) {
-            temp = temp + this.cards.get(i).strCard() + " ";
+        for (int i = 0; i < cards.size(); i++) {
+            temp = temp + cards.get(i).strCard() + " ";
         }
         return temp;
     }
 
     /* Add a card to the hand. */
     void add(Card card) {
-        this.cards.add(card);
+        cards.add(card);
     }
 
+    /* Return the ith card in the hand. */
     Card get(int i){
         return cards.get(i);
     }
 
     /* Show the number of cards in the hand */
     int size(){
-        return this.cards.size();
+        return cards.size();
     }
-
-    /* Return the highest card in the hand. */
-    Card highestCard(){
-        Card highest = this.cards.get(0);
-        for(Card card:this.cards){
-            if(card.absValue()>highest.absValue()){
-                highest = card;
-            }
-        }
-        return highest;
-    }
-
-    /* Create an inventory of the hand, i.e. how many cards have certain value. returns an
-    * array from 0 to 12, number of cards with value n is stored in index n-2. */
-    int[] inventory(){
-        int[] inv = new int[13];
-        for(Card card:this.cards){
-            inv[card.getValue() - 2] += 1;
-        }
-        return inv;
-    }
-
 
     /* Out of the cards in the hand, return the 5-card hand with the highest rank*/
-    Hand getBestHand(){
+    public Hand getBestHand(){
         int highest = 0;
         Hand highestHand = new Hand();
         for(Hand combination:combinations(5)){
@@ -104,9 +69,8 @@ public class Hand {
         return highestHand;
     }
 
-    /* Out of the cards in the hand, return an ArrayList of combinations of k different hands
-     defined recursively*/
-    ArrayList<Hand> combinations(int k){
+    /* Out of the cards in the hand, return an ArrayList of combinations of k different hands. */
+    public ArrayList<Hand> combinations(int k){
         ArrayList<Hand> combinations = new ArrayList<>();
         if(k == 1){
             for(Card card:cards){
@@ -138,16 +102,16 @@ public class Hand {
         return combinations;
     }
 
-    /* absolute rank of the hand, which if compared with other hand will give its standing
+    /* Absolute rank of the hand, which if compared with other hand will give its standing
     * wrt to that hand*/
-    int absoluteRank(){
+    public int absoluteRank(){
         checkTypeRank();
         return (100 * this.type) + this.rank;
     }
 
     /* initialise process that checks what type of hand it is and what's the rank within the hand
     * the value is saved within thw  */
-    void checkTypeRank(){
+    public void checkTypeRank(){
         if(this.isStraightFlush()) {
 
         } else if(this.isFourOfAKind()){
@@ -170,12 +134,12 @@ public class Hand {
         }
     }
 
-    /* Below are methods which determine the type of hand and its ranking.
+    /* METHODS TO DETERMINE TYPE AND RANK
     * this.type and this.rank is set while the methods are run, therefore it not only returns
     * a boolean value but also modifies the hand's properties (i.e. rank and type)
-    * NOTE: most of these only work properly with a 5-hand card*/
+    * NOTE: most of these only work properly with a 5-hand card, use combinations(5)*/
 
-    boolean isStraightFlush(){
+    private boolean isStraightFlush(){
         if(this.isStraight() && this.isFlush()){
             this.type = 9;
             this.rank = this.highestCard().absValue();
@@ -186,7 +150,7 @@ public class Hand {
         }
     }
 
-    boolean isFourOfAKind(){
+    private boolean isFourOfAKind(){
         int [] inv = this.inventory();
         for(int i=0 ; i<13; i++){
             if(inv[i] == 4){
@@ -215,7 +179,7 @@ public class Hand {
 //        }
     }
 
-    boolean isFullHouse(){
+    private boolean isFullHouse(){
         if(this.isPair() && this.isThreeOfAKind()){
             this.type = 7;
             return true;
@@ -225,7 +189,7 @@ public class Hand {
         }
     }
 
-    boolean isFlush() {
+    private boolean isFlush() {
         int spades = 0;
         int hearts = 0;
         int diamonds = 0;
@@ -256,7 +220,7 @@ public class Hand {
         }
     }
 
-    boolean isStraight() {
+    private boolean isStraight() {
        int[] inv = this.inventory();
        int count;
        for(int i = 0; i < inv.length-5; i++){
@@ -275,7 +239,7 @@ public class Hand {
        return false;
     }
 
-    boolean isThreeOfAKind() {
+    private boolean isThreeOfAKind() {
         int[] inv = this.inventory();
         for (int i = 0; i < 13; i++) {
             if (inv[i] == 3) {
@@ -287,7 +251,7 @@ public class Hand {
         return false;
     }
 
-    boolean isDoublePair() {
+    private boolean isDoublePair() {
         int numberOfPairs = 0;
         int highestPair = 0;
         int[] inv = this.inventory();
@@ -306,7 +270,7 @@ public class Hand {
         }
     }
 
-    boolean isPair() {
+    private boolean isPair() {
         int[] inv = this.inventory();
         for (int i = 0; i < 13; i++) {
             if (inv[i] == 2) {
@@ -317,6 +281,30 @@ public class Hand {
         }
         return false;
     }
+
+    /* METHODS TO HELP CALCULATE TYPE AND RANK*/
+    /* Create an inventory of the hand, i.e. how many cards have certain value. returns an
+    * array from 0 to 12, number of cards with value n is stored in index n-2. */
+    int[] inventory(){
+        int[] inv = new int[13];
+        for(Card card:cards){
+            inv[card.getValue() - 2] += 1;
+        }
+        return inv;
+    }
+
+    /* Return the highest card in the hand. */
+    Card highestCard(){
+        Card highest = this.cards.get(0);
+        for(Card card:this.cards){
+            if(card.absValue()>highest.absValue()){
+                highest = card;
+            }
+        }
+        return highest;
+    }
+
+
 
 //    /*Selects best hand out of possible hands*/
 //    void finalHand() {

@@ -21,9 +21,9 @@ public class Deck{
         setCards(unshuffledDeck);
     }
 
-    /* We can also initialise a deck with specified cards (for playing with modified deck */
-    Deck(ArrayList _cards){
-        setCards(_cards);
+    /* We can also initialise a deck with specified cards (for playing with modified deck) */
+    Deck(ArrayList cards){
+        this.cards = cards;
     }
 
     public ArrayList<Card> getCards() {
@@ -35,28 +35,28 @@ public class Deck{
     }
 
     /*Shuffle deck*/
-    void shuffle() {
-        Collections.shuffle(this.cards);
+    public void shuffle() {
+        Collections.shuffle(cards);
         System.out.println("Deck shuffled.");
     }
 
     /*Deals one card to specified hand*/
-    void dealTo(Hand hand){
-        boolean add = hand.cards.add(this.cards.remove(0));
+    public void dealTo(Hand hand){
+        hand.add(cards.remove(0));
     }
 
     /* Returns a string with the cards in the deck. */
-    String show(){
+    public String show(){
         String temp = "";
-        for(int i = 0; i<this.cards.size(); i++ ){
-            temp = temp + this.cards.get(i).strCard() + " ";
+        for(int i = 0; i<cards.size(); i++ ){
+            temp = temp + cards.get(i).strCard() + " ";
         }
         return temp;
     }
 
     /* Returns the number of cards in deck. */
-    int size(){
-        return this.cards.size();
+    public int size(){
+        return cards.size();
     }
 
 }
