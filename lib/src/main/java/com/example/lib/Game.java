@@ -142,7 +142,9 @@ public class Game {
     }
 
     /**
-     * A player's turn. At each player
+     * A player's turn. At each turn, a player can either raise, check, or fold.
+     * @param index index of player whose turn is currently at play
+     * @param noOfRaises no of raises in the round so far
      */
     public void playerTurn(int index, int noOfRaises) {
         /* Skip player if she has folded. */
@@ -179,7 +181,7 @@ public class Game {
                         players[index].setChoice(0);
                         break;
                     }
-                    System.out.print("Raise by: ");
+                    System.out.print("Raise by         : ");
                     int raise = scanner.nextInt();
                     if (players[index].getMoney() + players[index].getBet() < currentBet + raise) {
                         System.out.println("Insufficient money to raise.");

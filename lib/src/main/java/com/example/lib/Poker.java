@@ -1,7 +1,8 @@
 package com.example.lib;
 
 /**
- * A poker game. Number of players and the initial money of each player can be changed.
+ * A poker game. Number of players and the initial money of each player can be set at the start.
+ * The number of players is constant.
  *
  * The game starts with dealing 3 cards to community hand and 2 cards to each player's hand. The
  * betting stage commences after that, the deck dealing a card to community hand after each round.
