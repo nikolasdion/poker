@@ -1,37 +1,22 @@
 package com.example.lib;
 
 /**
- * Created by NDS on 25/10/2017.
+ * Represents a card.
  */
 
 public class Card {
-    /* Suit is represented as a number 1-4 from clubs to spades.
-     * Value is represented as a number 2-14 from 2 to ace.  */
-    private int value;
-    private int suit;
+    private int value; // Suit is represented as a number 1-4 from clubs to spades.
+    private int suit; // Value is represented as a number 2-14 from 2 to ace.
 
     Card(int value, int suit) {
         setValue(value);
         setSuit(suit);
     }
 
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    public void setSuit(int suit) {
-        this.suit = suit;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public int getSuit() {
-        return suit;
-    }
-
-    /* Display card data as a string, e.g. "2H" for Card(2,3) (two of hearts) */
+    /**
+     * Display card data as a string, e.g. "2H" for Card(2,3) (two of hearts).
+     * @return a string displaying the card
+     */
     public String strCard() {
         String showValue = "";
         String showSuit = "";
@@ -61,11 +46,31 @@ public class Card {
         return showValue + showSuit;
     }
 
-    /* Generate absolute value (i.e. rank) of the card. The formula is 4*value + suit.
-     * This is used to compare the value of the card (to find which is highest). */
+    /**
+     *  Generate absolute value (i.e. rank) of the card. The formula is 4*value + suit.
+     *  This is used to compare the value of the card (to find which is highest).
+     *  @return absolute value of the card
+     */
     public int absValue() {
          return value*4 + suit;
     }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public void setSuit(int suit) {
+        this.suit = suit;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public int getSuit() {
+        return suit;
+    }
+
 
 
 

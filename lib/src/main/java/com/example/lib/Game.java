@@ -2,18 +2,18 @@ package com.example.lib;
 import java.util.Scanner;
 
 /**
- * Created by NDS on 27/10/2017.
+ * Main game portion of the poker game.
  */
 
 public class Game {
 
-    /* Variables that do not change between games. */
+    /** Variables that do not change between games. */
     Scanner scanner = new Scanner( System.in );
     private int numberOfPlayers;
     private Player[] players;
     private boolean isPlaying = true; //whether players want to continue playing
 
-    /* Variables that reset every game. */
+    /** Variables that reset every game. */
     private int pot;
     private int currentBet; //Current bet (if player checks, her bet is matched with this value)
     private Deck deck;
@@ -21,8 +21,12 @@ public class Game {
     private boolean showdown = false; // Whether showdown is required at the end
     private int winner; // Index of the winner, set to -1 on construction
 
-    /* Initialise game, creating array of players and shuffled deck,
-     * setting pot and currentBet to 0. */
+    /**
+     * Initialise game, creating array of players and shuffled deck,
+     * setting pot and currentBet to 0.
+     * @param numberOfPlayers number of players in the game
+     * @param initialMoney initial money that each player has
+     */
     Game(int numberOfPlayers, int initialMoney) {
         this.numberOfPlayers = numberOfPlayers;
         this.players = new Player[numberOfPlayers];
@@ -46,14 +50,16 @@ public class Game {
 
     /* METHODS */
 
-    /* Show status at the start of a game. */
+    /**
+     *  Prints game status: community hand, current bet, and pot.
+     */
     public void displayStatus() {
         System.out.println("Community Hand   : " + communityHand.show());
         System.out.println("Current bet      : " + currentBet);
         System.out.println("Pot              : " + pot);
     }
 
-    /* Deal 2 cards to each player's hand.*/
+    /** Deal 2 cards to each player's hand.*/
     public void dealPlayers() {
         for (Player player:players) {
             Hand tempHand = new Hand();
@@ -65,13 +71,17 @@ public class Game {
         System.out.println("Two cards were dealt to each player.");
     }
 
-    /* Deal a card to community hand. */
+    /** Deal a card to community hand. */
     public void dealCommunity() {
         deck.dealTo(communityHand);
         System.out.println("A card was dealt to community hand.");
     }
 
-    /* The betting stage of the game, consisting of maximum 3 rounds of 3 turns each. */
+    /**
+     * The betting stage of the game, consisting of maximum 3 rounds of 3 turns each.
+     * This ends after either a winner has been declared or the maximum number of rounds has
+     * been played
+     */
     public void bettingStage() {
         for (int round = 1; round < 4; round++) {
 
@@ -96,7 +106,9 @@ public class Game {
         }
     }
 
-    /* A betting round. */
+    /**
+     * A betting round. Each round consists of at most 3 turns.
+     * */
     public void bettingRound() {
         int currentRaiser = -1;
         int noOfRaises = 0;
@@ -127,7 +139,9 @@ public class Game {
         }
     }
 
-    /* A player's turn. */
+    /**
+     * A player's turn. At each player
+     */
     public void playerTurn(int index, int noOfRaises) {
         /* Skip player if she has folded. */
         if (players[index].hasFolded()) {
@@ -206,14 +220,14 @@ public class Game {
 
     }
 
-    /* Reset the choice parameter of players after each round of betting. */
+    /** Reset the choice parameter of players after each round of betting. */
     public void resetChoices() {
         for (Player player:players) {
             player.setChoice(0);
         }
     }
 
-    /* Compare remaining players' hands. Executed if no winner is announced after betting stage. */
+    /** Compare remaining players' hands. Executed if no winner is announced after betting stage. */
     public void showdown() {
         int highest = 0;
         System.out.println("!!! SHOWDOWN !!!");
@@ -241,8 +255,11 @@ public class Game {
         }
     }
 
-    /* Checked at the start of every player's turn, in case a full cycle has been completed and
-     * everyone has called/folded. -1 because the current player would've been the one raised. */
+    /**
+     * Check if everyone has either called or folded.
+     * Checked at the start of every player's turn, in case a full cycle has been completed and
+     * everyone has called/folded.
+     */
     public boolean checkCalledFolded() {
         int numberFolded = 0;
         int numberCalled = 0;
@@ -261,7 +278,11 @@ public class Game {
         }
     }
 
-    /* Check if everyone has folded (checked at the start of every player's turn).*/
+    /**
+     *  Check if everyone has folded.
+     *  Checked at the start of every player's turn, and if this is true, then current player is
+     *  the winner
+     */
     public boolean checkFolded() {
         int numberFolded = 0;
         for (Player player:players) {
@@ -277,8 +298,7 @@ public class Game {
         }
     }
 
-
-    /* Reward winner of current game with money in the pot. */
+    /** Reward winner of current game with money in the pot. */
     public void reward() {
         /* Empty every player's bet into the pot (later given to the winner). */
         for (Player player:players) {
@@ -299,7 +319,7 @@ public class Game {
         System.out.println();
     }
 
-    /* Setup for a new game after continuing. */
+    /** Setup for a new game after continuing. */
     public void reset() {
         resetChoices();
         winner = -1;
@@ -321,7 +341,7 @@ public class Game {
         communityHand = emptyHand;
     }
 
-    /* Checks whether players want to continue playing after someone wins current game. */
+    /** Checks whether players want to continue playing after someone wins current game. */
     public void cont() {
         int cont = 0;
         while (cont == 0) {
@@ -341,7 +361,7 @@ public class Game {
         }
     }
 
-    /* Show status at the end of a game. */
+    /** Print everyone's money at the end of a game. */
     public void statusEnd() {
         System.out.println("!!!!!! GAME HAS ENDED !!!!!!");
         for (Player player:players) {

@@ -3,14 +3,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by NDS on 26/10/2017.
+ * A deck of cards, from which cards are dealt to the players and the community hand.
  */
 
 public class Deck{
     private ArrayList<Card> cards = new ArrayList<Card>();
 
-    /* When initialised without argument, a deck has 52 cards from 2 of clubs to ace of spades
-     * unshuffled, arranged by suits. */
+    /**
+     * Create a deck with 52 cards from 2 of clubs to ace of spades
+     * unshuffled, arranged by suits.
+     */
     Deck() {
         ArrayList<Card> unshuffledDeck = new ArrayList<>();
         for (int i = 1; i < 5; i++) {
@@ -22,7 +24,10 @@ public class Deck{
         setCards(unshuffledDeck);
     }
 
-    /* We can also initialise a deck with specified cards (for playing with modified deck). */
+    /**
+     * Create a deck with specified cards (for playing with modified deck).
+     * @param cards cards which will be in the deck
+     */
     Deck(ArrayList cards) {
         this.cards = cards;
     }
@@ -35,18 +40,25 @@ public class Deck{
         this.cards = cards;
     }
 
-    /* Shuffle deck. */
+    /** Shuffle deck. */
     public void shuffle() {
         Collections.shuffle(cards);
         System.out.println("Deck shuffled.");
     }
 
-    /* Deal one card to specified hand. */
+    /**
+     * Deals the first card in the deck to specified hand.
+     * Dealt card is removed from the deck.
+     * @param hand the hand to which the card is dealt
+     */
     public void dealTo(Hand hand) {
         hand.add(cards.remove(0));
     }
 
-    /* Returns a string with the cards in the deck. */
+    /**
+     * Returns a string with the cards in the deck.
+     * @return string displaying the cards in the deck
+     */
     public String show() {
         String temp = "";
         for (int i = 0; i<cards.size(); i++ ) {
@@ -55,7 +67,10 @@ public class Deck{
         return temp;
     }
 
-    /* Returns the number of cards in deck. */
+    /**
+     *  Returns the number of cards in the deck.
+     *  @return number of cards in the deck
+     */
     public int size() {
         return cards.size();
     }

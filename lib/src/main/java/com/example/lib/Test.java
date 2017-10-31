@@ -36,22 +36,18 @@ public class Test {
 //        tempHand.add(card7);
 //        System.out.println(tempHand.show());
 
-        Deck deck = new Deck();
-
-        Hand tempHand = new Hand(deck.getCards());
-
-        ArrayList<Hand> combi = tempHand.combinations(5);
-
-//        for(Hand cards:combi){
-//            System.out.println("Cards collection " + combi.indexOf(cards) + " " + cards.show());
-//        }
-
-        System.out.println(" Best Hand: " +  tempHand.getBestHand().show() + ";  Score:  " + tempHand.getBestHand().absoluteRank());
-
-
-
-
-
+//        Deck deck = new Deck();
+//
+//        Hand tempHand = new Hand(deck.getCards());
+//
+//        ArrayList<Hand> combi = tempHand.combinations(5);
+//
+////        for(Hand cards:combi){
+////            System.out.println("Cards collection " + combi.indexOf(cards) + " " + cards.show());
+////        }
+//
+//        System.out.println(" Best Hand: " +  tempHand.getBestHand().show() + ";  Score:  " + tempHand.getBestHand().absoluteRank());
+//
 
 //        System.out.println("Hand                : " + tempHand.show());
 //        System.out.println("Straight flush      : " + tempHand.isStraightFlush());

@@ -1,7 +1,7 @@
 package com.example.lib;
 
 /**
- * Created by NDS on 25/10/2017.
+ * Player
  */
 
 public class Player {
@@ -12,6 +12,11 @@ public class Player {
     private int bet; // The amount of money the player is betting in the current game.
     private boolean hasFolded;
 
+    /**
+     * Initialise a player with some money and a name.
+     * @param money amount of money a player has
+     * @param name name of player
+     */
     Player(int money, String name) {
         setMoney(money);
         setName(name);

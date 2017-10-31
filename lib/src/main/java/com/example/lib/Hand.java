@@ -2,7 +2,8 @@ package com.example.lib;
 import java.util.ArrayList;
 
 /**
- * Created by NDS on 26/10/2017.
+ * A hand which consists of a collection of cards.
+ * A hand can belong to a player or the game (community hand).
  */
 
 public class Hand {
@@ -11,13 +12,18 @@ public class Hand {
     private int type;  //  Type, e.g. straight flush (9), four of a kind (8), .... pair(2), highest card(1)
     private int rank;  //  Rank within the type of hand
 
-    /* By default initialise an empty hand. */
+    /**
+     *  By default initialise an empty hand.
+     */
     Hand() {
         type = 0;
         rank = 0;
     }
 
-    /* Construct a hand with specified cards. */
+    /**
+     *  Construct a hand with specified cards.
+     *  @param cards an ArrayList of cards to be included in the hand
+     */
     Hand(ArrayList<Card> cards) {
         this.cards = cards;
         type = 0;
@@ -32,7 +38,10 @@ public class Hand {
         this.cards = cards;
     }
 
-    /* Return a string displaying the cards in the hand. */
+    /**
+     *  Return a string displaying the cards in the hand.
+     *  @return string displaying the cards in the hand
+     */
     String show() {
         String temp = "";
         for (int i = 0; i < cards.size(); i++) {
@@ -41,22 +50,35 @@ public class Hand {
         return temp;
     }
 
-    /* Add a card to the hand. */
+    /**
+     * Add a card to the hand.
+     * @param card card to be added to the hand
+     */
     void add(Card card) {
         cards.add(card);
     }
 
-    /* Return the ith card in the hand. */
+    /**
+     * Return the ith card in the hand.
+     * @return ith card in the hand
+     * @param i index of the card
+     * */
     Card get(int i) {
         return cards.get(i);
     }
 
-    /* Show the number of cards in the hand. */
+    /**
+     *  Return the number of cards in the hand.
+     *  @return number of cards in the hand
+     */
     int size() {
         return cards.size();
     }
 
-    /* Out of the cards in the hand, return the 5-card hand with the highest rank. */
+    /**
+     * Out of the cards in the hand, return the 5-card hand with the highest rank.
+     * @return 5-card hand with the highest value
+     */
     public Hand getBestHand() {
         int highest = 0;
         Hand highestHand = new Hand();
@@ -69,7 +91,11 @@ public class Hand {
         return highestHand;
     }
 
-    /* Out of the cards in the hand, return an ArrayList of combinations of k different hands. */
+    /**
+     * Out of the cards in the hand, return combinations of k cards.
+     * @return ArrayList of hands which are k cards combinations of current hand
+     * @param k number of cards
+     */
     public ArrayList<Hand> combinations(int k) {
         ArrayList<Hand> combinations = new ArrayList<>();
         if (k == 1) {
@@ -101,14 +127,17 @@ public class Hand {
         return combinations;
     }
 
-    /* Absolute rank of the hand, which if compared with other hand will give its standing
-     * wrt to that hand. */
+    /**
+     * Returns the absolute rank of the hand, which can be compared with that of another hand
+     * to determine which has a higher rank. Used in showdown.
+     * @return absolute rank of the hand
+     */
     public int absoluteRank() {
         checkTypeRank();
         return (100 * this.type) + this.rank;
     }
 
-    /* Check and save the type and rank of the hand. */
+    /** Check and save the type and rank of the hand. */
     public void checkTypeRank() {
         if (this.isStraightFlush()) {
 
@@ -132,10 +161,13 @@ public class Hand {
         }
     }
 
-    /* METHODS TO DETERMINE TYPE AND RANK
-    * type and rank are set while the methods are run, therefore it not only returns
-    * a boolean value but also modifies the hand's properties (i.e. rank and type)
-    * NOTE: most of these only work properly with a 5-hand card, use combinations(5)*/
+    /**
+     * METHODS TO DETERMINE TYPE AND RANK
+     * type and rank are set while the methods are run, therefore it not only returns
+     * a boolean value but also modifies the hand's properties (i.e. rank and type).
+     * Note that most of these only work properly with a 5-card hand.
+     * Use combinations(5) to get a 5-card hand.
+     */
 
     private boolean isStraightFlush() {
         if (isStraight() && isFlush()) {
@@ -265,9 +297,12 @@ public class Hand {
         return false;
     }
 
-    /* METHODS TO HELP CALCULATE TYPE AND RANK*/
-    /* Create an inventory of the hand, i.e. how many cards have certain value. returns an
-     * array from 0 to 12, number of cards with value n is stored in index n-2. */
+
+    /**
+     * Create an inventory of the hand, i.e. how many cards have certain value. returns an
+     * array from 0 to 12, number of cards with value n is stored in index n-2.
+     * @return an array (indices 0-12), number of cards with value n is stored in index n-2
+     */
     int[] inventory() {
         int[] inv = new int[13];
         for (Card card:cards) {
@@ -276,7 +311,10 @@ public class Hand {
         return inv;
     }
 
-    /* Return the highest card in the hand. */
+    /**
+     *  Return the highest card in the hand.
+     *  @return highest card in the hand
+     */
     Card highestCard() {
         Card highest = this.cards.get(0);
         for (Card card:this.cards) {
