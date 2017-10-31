@@ -2,7 +2,7 @@ package com.example.lib;
 import java.util.*;
 
 /**
- * Created by NDS on 27/10/2017.
+ * Test class to test various parts of the program.
  */
 
 public class Test {

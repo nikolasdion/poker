@@ -2,8 +2,12 @@ package com.example.lib;
 import java.util.ArrayList;
 
 /**
- * A hand which consists of a collection of cards.
- * A hand can belong to a player or the game (community hand).
+ * A hand which holds a number cards.
+ * Can belong to a player or the game (community hand).
+ * Has a type (e.g. flush) and a rank (their standing within the type), but these are only evaluated
+ * accurately for a 5-card hand.
+ * Can hold any number of cards, typically a player's hand has two cards and a community hand has
+ * 3-5 cards.
  */
 
 public class Hand {

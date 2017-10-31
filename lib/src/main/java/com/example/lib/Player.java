@@ -1,7 +1,8 @@
 package com.example.lib;
 
 /**
- * Player
+ * A player in the poker game. During her turn, a player has 3 choices, represented by an integer:
+ * 1: raise, 2: check, 3: fold.
  */
 
 public class Player {

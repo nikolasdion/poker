@@ -2,7 +2,9 @@ package com.example.lib;
 import java.util.Scanner;
 
 /**
- * Main game portion of the poker game.
+ * The main building blocks of a poker game. It contains parameters which are modified through its
+ * functions. Most functions modify only the state of the game. The game is initialised and its flow
+ * dictated in the Poker class.
  */
 
 public class Game {
@@ -230,6 +232,7 @@ public class Game {
     /** Compare remaining players' hands. Executed if no winner is announced after betting stage. */
     public void showdown() {
         int highest = 0;
+        System.out.println();
         System.out.println("!!! SHOWDOWN !!!");
         for (int index = 0; index < numberOfPlayers; index++) {
             if (players[index].hasFolded() == false) {

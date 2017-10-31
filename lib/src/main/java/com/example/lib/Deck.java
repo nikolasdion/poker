@@ -32,14 +32,6 @@ public class Deck{
         this.cards = cards;
     }
 
-    public ArrayList<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(ArrayList<Card> cards) {
-        this.cards = cards;
-    }
-
     /** Shuffle deck. */
     public void shuffle() {
         Collections.shuffle(cards);
@@ -56,7 +48,8 @@ public class Deck{
     }
 
     /**
-     * Returns a string with the cards in the deck.
+     * Returns a string with the cards in the deck. Not used in actual game,but can be used for
+     * testing.
      * @return string displaying the cards in the deck
      */
     public String show() {
@@ -68,11 +61,21 @@ public class Deck{
     }
 
     /**
-     *  Returns the number of cards in the deck.
-     *  @return number of cards in the deck
+     * Returns the number of cards in the deck. Not used in actual game,but can be used for
+     * testing.
+     * @return number of cards in the deck
      */
     public int size() {
         return cards.size();
     }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(ArrayList<Card> cards) {
+        this.cards = cards;
+    }
+
 
 }

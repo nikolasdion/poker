@@ -2,6 +2,8 @@ package com.example.lib;
 
 /**
  * Represents a card.
+ * Suit is represented as a number 1-4 from clubs to spades.
+ * Value is represented as a number 2-14 from 2 to ace.
  */
 
 public class Card {
