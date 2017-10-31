@@ -22,7 +22,7 @@ public class Game {
     private int winner; // Index of the winner, set to -1 on construction
 
     /* Initialise game, creating array of players and shuffled deck,
-    * setting pot and currentBet to 0. */
+     * setting pot and currentBet to 0. */
     Game(int numberOfPlayers, int initialMoney) {
         this.numberOfPlayers = numberOfPlayers;
         this.players = new Player[numberOfPlayers];
@@ -71,7 +71,7 @@ public class Game {
         System.out.println("A card was dealt to community hand.");
     }
 
-    /* The betting stage of the game, consisting of maximum 3 rounds of 3 turns each*/
+    /* The betting stage of the game, consisting of maximum 3 rounds of 3 turns each. */
     public void bettingStage() {
         for (int round = 1; round < 4; round++) {
 
@@ -88,7 +88,7 @@ public class Game {
                 dealCommunity(); //deal one card to community hand after the end of each round
             }
             displayStatus();
-            resetChoices(); //reset everyone's choice to 0, folded players are still recorded in hasFolded attribute
+            resetChoices(); // folded players are still recorded in hasFolded attribute
 
             if (round == 3) {
                 showdown = true;
@@ -116,7 +116,7 @@ public class Game {
 
                 playerTurn(index, noOfRaises);
                 /*If player raises, change the status of current raiser to this player
-                * and track number of raises. Maximum number of raises per round is 3.*/
+                 * and track number of raises. Maximum number of raises per round is 3.*/
                 if (players[index].getChoice()== 1) {
                     currentRaiser = index;
                     noOfRaises ++;
@@ -176,7 +176,7 @@ public class Game {
                     noOfRaises++;
                     break;
 
-                /* Player checks.*/
+                /* Player checks. */
                 case 2:
                     if (players[index].getMoney() + players[index].getBet() < currentBet) {
                         System.out.println("Insufficient money to call.");
@@ -188,7 +188,7 @@ public class Game {
                     System.out.println("Called.");
                     break;
 
-                /* Player folds.*/
+                /* Player folds. */
                 case 3:
                     pot = pot + players[index].getBet();
                     players[index].setBet(0);
@@ -206,7 +206,7 @@ public class Game {
 
     }
 
-    /* Reset the choice parameter of players after each round of betting*/
+    /* Reset the choice parameter of players after each round of betting. */
     public void resetChoices() {
         for (Player player:players) {
             player.setChoice(0);
@@ -220,19 +220,19 @@ public class Game {
         for (int index = 0; index < numberOfPlayers; index++) {
             if (players[index].hasFolded() == false) {
 
-                /* Create a hand which contains both the player's hand and community hand*/
+                /* Create a hand which contains both the player's hand and community hand. */
                 Hand tempHand = players[index].getHand();
                 for (Card communityCard:communityHand.getCards()) {
                     tempHand.add(communityCard);
                 }
 
-                /* Select the best 5 card hand out of the available combination*/
+                /* Select the best 5 card hand out of the available combination. */
                 Hand bestHand = tempHand.getBestHand();
                 System.out.println("Player " + players[index].getName() + "'s best hand: "+ bestHand.show());
                 System.out.println("Player " + players[index].getName() + "'s absolute : "+ bestHand.absoluteRank());
 
                 /* If the best hand of current player is higher than the current highest,
-                set winner to current player and highest rank to current hand*/
+                 * set winner to current player and highest rank to current hand. */
                 if (bestHand.absoluteRank() > highest) {
                     winner = index;
                     highest = bestHand.absoluteRank();
@@ -242,7 +242,7 @@ public class Game {
     }
 
     /* Checked at the start of every player's turn, in case a full cycle has been completed and
-    * everyone has called/folded. -1 because the current player would've been the one raised. */
+     * everyone has called/folded. -1 because the current player would've been the one raised. */
     public boolean checkCalledFolded() {
         int numberFolded = 0;
         int numberCalled = 0;
@@ -299,7 +299,7 @@ public class Game {
         System.out.println();
     }
 
-    /*Setup for a new game after continuing*/
+    /* Setup for a new game after continuing. */
     public void reset() {
         resetChoices();
         winner = -1;
@@ -321,7 +321,7 @@ public class Game {
         communityHand = emptyHand;
     }
 
-    /*Checks whether players want to continue playing another game after someone wins current game*/
+    /* Checks whether players want to continue playing after someone wins current game. */
     public void cont() {
         int cont = 0;
         while (cont == 0) {

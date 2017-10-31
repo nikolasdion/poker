@@ -51,12 +51,12 @@ public class Hand {
         return cards.get(i);
     }
 
-    /* Show the number of cards in the hand */
+    /* Show the number of cards in the hand. */
     int size() {
         return cards.size();
     }
 
-    /* Out of the cards in the hand, return the 5-card hand with the highest rank*/
+    /* Out of the cards in the hand, return the 5-card hand with the highest rank. */
     public Hand getBestHand() {
         int highest = 0;
         Hand highestHand = new Hand();
@@ -98,19 +98,17 @@ public class Hand {
                 combinations.add(hand);
             }
         }
-
         return combinations;
     }
 
     /* Absolute rank of the hand, which if compared with other hand will give its standing
-    * wrt to that hand*/
+     * wrt to that hand. */
     public int absoluteRank() {
         checkTypeRank();
         return (100 * this.type) + this.rank;
     }
 
-    /* initialise process that checks what type of hand it is and what's the rank within the hand
-    * the value is saved within thw  */
+    /* Check and save the type and rank of the hand. */
     public void checkTypeRank() {
         if (this.isStraightFlush()) {
 
@@ -135,7 +133,7 @@ public class Hand {
     }
 
     /* METHODS TO DETERMINE TYPE AND RANK
-    * this.type and this.rank is set while the methods are run, therefore it not only returns
+    * type and rank are set while the methods are run, therefore it not only returns
     * a boolean value but also modifies the hand's properties (i.e. rank and type)
     * NOTE: most of these only work properly with a 5-hand card, use combinations(5)*/
 
@@ -269,7 +267,7 @@ public class Hand {
 
     /* METHODS TO HELP CALCULATE TYPE AND RANK*/
     /* Create an inventory of the hand, i.e. how many cards have certain value. returns an
-    * array from 0 to 12, number of cards with value n is stored in index n-2. */
+     * array from 0 to 12, number of cards with value n is stored in index n-2. */
     int[] inventory() {
         int[] inv = new int[13];
         for (Card card:cards) {
@@ -288,16 +286,5 @@ public class Hand {
         }
         return highest;
     }
-
-
-
-//    /*Selects best hand out of possible hands*/
-//    void finalHand() {
-//
-//
-//    }
-//
-
-
 
 }
