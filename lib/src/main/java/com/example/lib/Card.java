@@ -10,33 +10,33 @@ public class Card {
     private int value;
     private int suit;
 
-    Card(int value, int suit){
+    Card(int value, int suit) {
         setValue(value);
         setSuit(suit);
     }
 
-    public void setValue(int value){
+    public void setValue(int value) {
         this.value = value;
     }
 
-    public void setSuit(int suit){
+    public void setSuit(int suit) {
         this.suit = suit;
     }
 
-    public int getValue(){
+    public int getValue() {
         return value;
     }
 
-    public int getSuit(){
+    public int getSuit() {
         return suit;
     }
 
     /* Display card data as a string, e.g. "2H" for Card(2,3) (two of hearts) */
-    public String strCard(){
+    public String strCard() {
         String showValue = "";
         String showSuit = "";
 
-        if((value > 1) && (value < 11)){
+        if ((value > 1) && (value < 11)) {
             showValue = String.valueOf(this.value);
         } else if (value == 11) {
             showValue = "J";
@@ -48,13 +48,13 @@ public class Card {
             showValue = "A";
         }
 
-        if(suit == 1 ){
+        if (suit == 1 ) {
             showSuit = "C";
         } else if (suit == 2) {
             showSuit = "D";
         } else if (suit == 3) {
             showSuit = "H";
-        } else if (suit == 4){
+        } else if (suit == 4) {
             showSuit = "S";
         }
 
@@ -63,7 +63,7 @@ public class Card {
 
     /* Generate absolute value (i.e. rank) of the card. The formula is 4*value + suit.
      * This is used to compare the value of the card (to find which is highest). */
-    int absValue(){
+    public int absValue() {
          return value*4 + suit;
     }
 

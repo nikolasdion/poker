@@ -1,5 +1,6 @@
 package com.example.lib;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by NDS on 26/10/2017.
@@ -10,9 +11,9 @@ public class Deck{
 
     /* When initialised without argument, a deck has 52 cards from 2 of clubs to ace of spades
     * unshuffled, arranged by suits. */
-    Deck(){
+    Deck() {
         ArrayList<Card> unshuffledDeck = new ArrayList<>();
-        for (int i = 1; i < 5; i++){
+        for (int i = 1; i < 5; i++) {
             for (int j = 2; j < 15; j++) {
                 Card temp = new Card(j, i);
                 unshuffledDeck.add(temp);
@@ -22,7 +23,7 @@ public class Deck{
     }
 
     /* We can also initialise a deck with specified cards (for playing with modified deck) */
-    Deck(ArrayList cards){
+    Deck(ArrayList cards) {
         this.cards = cards;
     }
 
@@ -41,21 +42,21 @@ public class Deck{
     }
 
     /*Deals one card to specified hand*/
-    public void dealTo(Hand hand){
+    public void dealTo(Hand hand) {
         hand.add(cards.remove(0));
     }
 
     /* Returns a string with the cards in the deck. */
-    public String show(){
+    public String show() {
         String temp = "";
-        for(int i = 0; i<cards.size(); i++ ){
+        for (int i = 0; i<cards.size(); i++ ) {
             temp = temp + cards.get(i).strCard() + " ";
         }
         return temp;
     }
 
     /* Returns the number of cards in deck. */
-    public int size(){
+    public int size() {
         return cards.size();
     }
 

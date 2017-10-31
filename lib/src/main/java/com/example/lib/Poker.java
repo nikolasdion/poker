@@ -1,18 +1,17 @@
 package com.example.lib;
-import java.util.*;
 
 public class Poker {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        /* Game setup. */
+        /* Game settings. */
         int numberOfPlayers = 3;
         int initialMoney = 1000;
 
-
+        /* Game starts here. */
         Game game = new Game(numberOfPlayers,initialMoney);
 
-        while(game.isPlaying()){
+        while (game.isPlaying()) {
             game.reset();
 
             /* Deal cards to players and to community hand. */
@@ -26,7 +25,9 @@ public class Poker {
             game.bettingStage();
 
             /* Showdown (if needed). */
-            if(game.getShowdown()) game.showdown();
+            if (game.getShowdown()) {
+                game.showdown();
+            }
 
             /* Reward winner with money in the pot. */
             game.reward();
@@ -36,6 +37,7 @@ public class Poker {
 
         }
 
+        /* Display players' money at the end of the game.  */
         game.statusEnd();
     }
 }

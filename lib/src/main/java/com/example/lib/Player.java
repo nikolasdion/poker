@@ -12,8 +12,7 @@ public class Player {
     private int bet; // The amount of money the player is betting in the current game.
     private boolean hasFolded;
 
-
-    Player(int money, String name){
+    Player(int money, String name) {
         setMoney(money);
         setName(name);
         setChoice(0);
@@ -21,19 +20,19 @@ public class Player {
         setFolded(false);
     }
 
-    public void setMoney(int money){
+    public void setMoney(int money) {
         this.money = money;
     }
 
-    public void setHand(Hand hand){
+    public void setHand(Hand hand) {
         this.hand = hand;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
-    public void setChoice(int choice){
+    public void setChoice(int choice) {
         this.choice = choice;
     }
 
@@ -45,13 +44,21 @@ public class Player {
         this.hasFolded = hasFolded;
     }
 
-    public int getMoney(){return money;}
+    public int getMoney() {
+        return money;
+    }
 
-    public Hand getHand(){return hand;}
+    public Hand getHand() {
+        return hand;
+    }
 
-    public String getName(){return name;}
+    public String getName() {
+        return name;
+    }
 
-    public int getChoice(){return choice;}
+    public int getChoice() {
+        return choice;
+    }
 
     public int getBet() {
         return bet;
