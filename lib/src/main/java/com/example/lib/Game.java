@@ -109,6 +109,8 @@ public class Game {
     public void bettingStage() {
         for (int round = 1; round < 4; round++) {
 
+            resetChoices();
+
             bettingRound();
 
             /* End betting stage if there is already a winner. */
@@ -138,35 +140,39 @@ public class Game {
      * A betting round. Each round consists of at most 3 turns.
      * */
     public void bettingRound() {
-        int currentRaiser = -1;
         int noOfRaises = 0;
 
         while (noOfRaises < 4) {
+
+            /* Loop through all players. */
             for (int index = 0; index < mNumberOfPlayers; index++) {
 
                 /* Check that the player has not folded. */
                 if (!mPlayers[index].hasFolded()){
+
                     /* End betting round and declare winner if everyone but current player has folded. */
                     if (checkOthersFolded(index)) {
                         mWinner = index;
                         return;
                     }
 
-                    /* End betting round if current raiser is current player or everyone has called
-                     * or folded (i.e. everyone else in the past round has either called or folded). */
-                    if (currentRaiser == index || checkCalledFolded()) {
+                    /* End betting round everyone else has either called or folded EXCEPT during
+                     * the first turn. */
+                    if (checkOthersCalledFolded(index)
+                            && (mPlayers[index].getChoice() != 0) ) { // Choice is set to 0 at the start of every round.
                         return;
                     }
 
-                    /* Initiate the current player's turn. */
+                    /* Initiate the current player's turn.*/
+                    System.out.println();
                     displayStatus();
-                    int raise = mPlayers[index].playerTurn(mCurrentBet,noOfRaises);
+                    int raise = mPlayers[index].turn(mCurrentBet, noOfRaises);
+                    System.out.println();
 
                     /*If player raises, change the status of current raiser to this player
                      * and track number of raises. Maximum number of raises per round is 3.*/
                     if (raise > 0) {
                         mCurrentBet = mPlayers[index].getBet();
-                        currentRaiser = index;
                         noOfRaises++;
                     } else if(raise == -1){
                         mPot += mPlayers[index].getBet();
@@ -227,6 +233,7 @@ public class Game {
 
         /* Loop through every player except current player. */
         for (Player player : mPlayers) {
+
             /* Only add to counter if player*/
             if (player != mPlayers[index]){
                 if (player.hasFolded()) {
@@ -236,33 +243,26 @@ public class Game {
         }
 
         /* If everyone has folded but one (i.e. current player), return true. */
-        if (mNumberOfPlayers == numberFolded + 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return (mNumberOfPlayers == (numberFolded + 1) );
     }
 
-    /* Check if everyone has either called or folded. Used at the start of a turn to ensure
-     * even when no one raises, when a one round has been completed, the round ends.*/
-    public boolean checkCalledFolded() {
+    /* Check if everyone has either called or folded. Used at the start of a player's turn to ensure
+     * when a one round has been completed and no one raises, the round ends.*/
+    public boolean checkOthersCalledFolded(int index) {
         int countFolded = 0;
         int countCalled = 0;
 
         for (Player player : mPlayers) {
-            if (player.hasFolded()){
-                countFolded++;
-            }
-            else if(player.getChoice() == 2){
-                countCalled++;
+            if (player != mPlayers[index]) {
+                if (player.hasFolded()) {
+                    countFolded++;
+                } else if (player.getChoice() == 2) {
+                    countCalled++;
+                }
             }
         }
 
-        if (mNumberOfPlayers == countCalled + countFolded){
-            return true;
-        } else {
-            return false;
-        }
+        return ( (mNumberOfPlayers - 1) == (countCalled + countFolded) );
     }
 
     /** Reward winner of current game with money in the pot. */

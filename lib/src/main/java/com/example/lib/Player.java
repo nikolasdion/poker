@@ -80,7 +80,7 @@ public class Player {
 
     /* A player's turn in the game. Return the raise she makes (positive for raise, 0 for fold,
     -1 for fold. */
-    public int playerTurn(int currentBet, int noOfRaises ) {
+    public int turn(int currentBet, int noOfRaises ) {
 
         /* Set player's choice to 0. */
         mChoice = 0;
