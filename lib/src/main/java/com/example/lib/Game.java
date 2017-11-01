@@ -52,6 +52,25 @@ public class Game {
         return mShowdown;
     }
 
+    public int getPot() {
+        return mPot;
+    }
+
+    public void setPot(int pot) {
+        mPot = pot;
+    }
+
+    public int getCurrentBet() {
+        return mCurrentBet;
+    }
+
+    public void setCurrentBet(int currentBet) {
+        mCurrentBet = currentBet;
+    }
+
+    public Hand getCommunityHand() {
+        return mCommunityHand;
+    }
 
     /* METHODS */
 
@@ -125,129 +144,136 @@ public class Game {
         while (noOfRaises < 4) {
             for (int index = 0; index < mNumberOfPlayers; index++) {
 
-                /* End betting round (and betting stage) if every player but one has folded. */
-                if (checkFolded()) {
-                    mWinner = index;
-                    return;
+                /* Check that the player has not folded. */
+                if (!mPlayers[index].hasFolded()){
+                    /* End betting round and declare winner if everyone but current player has folded. */
+                    if (checkOthersFolded(index)) {
+                        mWinner = index;
+                        return;
+                    }
+
+                    /* End betting round if current raiser is current player or everyone has called
+                     * or folded (i.e. everyone else in the past round has either called or folded). */
+                    if (currentRaiser == index || checkCalledFolded()) {
+                        return;
+                    }
+
+                    /* Initiate the current player's turn. */
+                    displayStatus();
+                    int raise = mPlayers[index].playerTurn(mCurrentBet,noOfRaises);
+
+                    /*If player raises, change the status of current raiser to this player
+                     * and track number of raises. Maximum number of raises per round is 3.*/
+                    if (raise > 0) {
+                        mCurrentBet = mPlayers[index].getBet();
+                        currentRaiser = index;
+                        noOfRaises++;
+                    } else if(raise == -1){
+                        mPot += mPlayers[index].getBet();
+                        mPlayers[index].setBet(0);
+                    }
                 }
-
-                /* End betting round if everyone has called or folded. */
-                if (currentRaiser == index || checkCalledFolded()) {
-                    return;
-                }
-
-                /* Initiate the current player's turn. */
-                playerTurn(index, noOfRaises);
-
-                /*If player raises, change the status of current raiser to this player
-                 * and track number of raises. Maximum number of raises per round is 3.*/
-                if (mPlayers[index].getChoice()== 1) {
-                    currentRaiser = index;
-                    noOfRaises ++;
-
             }
-            }
-
         }
     }
 
-    /**
-     * A player's turn. At each turn, a player can either raise, check, or fold.
-     * @param index index of player whose turn is currently at play
-     * @param noOfRaises no of raises in the round so far
-     */
-    public void playerTurn(int index, int noOfRaises) {
-
-        /* Skip player if she has folded. */
-        if (mPlayers[index].hasFolded()) {
-            return;
-        }
-
-        /* Set player's choice to 0. */
-        mPlayers[index].setChoice(0);
-
-        /* Display status of the game for player's information. */
-        System.out.println();
-        System.out.println("!!!PLAYER " + mPlayers[index].getName() + "'s TURN!!!");
-        System.out.println("Community hand   : " + mCommunityHand.show());
-        System.out.println("Current game bet : " + mCurrentBet);
-        System.out.println("Pot              : " + mPot);
-        System.out.println("Player " + mPlayers[index].getName() + "'s hand  : "
-                + mPlayers[index].getHand().show());
-        System.out.println("Player " + mPlayers[index].getName() + "'s money : "
-                + mPlayers[index].getMoney());
-        System.out.println("Player " + mPlayers[index].getName() + "'s bet : "
-                + mPlayers[index].getBet());
-
-        /* Player makes a choice. */
-        while (mPlayers[index].getChoice() == 0) {
-            System.out.println("(1: raise, 2: call, 3: fold)");
-            System.out.print("Player " + mPlayers[index].getName() + "'s move  : ");
-            mPlayers[index].setChoice(mScanner.nextInt());
-
-            switch (mPlayers[index].getChoice()) {
-
-                /* Player raises.*/
-                case 1:
-
-                    /* Give error message and force player to choose again if there has been 3 raises in a round. */
-                    if (noOfRaises > 2) {
-                        System.out.println("Cannot raise further in this round.");
-                        mPlayers[index].setChoice(0);
-                        break;
-                    }
-
-                    /* Get the amount by which the player wishes to raise. */
-                    System.out.print("Raise by         : ");
-                    int raise = mScanner.nextInt();
-
-                    /* Give error message and force player to choose again if she has insufficient money. */
-                    if (mPlayers[index].getMoney() + mPlayers[index].getBet() < mCurrentBet + raise) {
-                        System.out.println("Insufficient money to raise.");
-                        mPlayers[index].setChoice(0);
-                        break;
-                    }
-
-                    /* If raise was successful, update game and player variables. */
-                    mCurrentBet = mCurrentBet + raise;
-                    mPlayers[index].setMoney(mPlayers[index].getMoney() + mPlayers[index].getBet() - mCurrentBet );
-                    mPlayers[index].setBet(mCurrentBet);
-                    noOfRaises++;
-                    break;
-
-                /* Player checks. */
-                case 2:
-
-                    /* Give error message and force player to choose again if she has insufficient money. */
-                    if (mPlayers[index].getMoney() + mPlayers[index].getBet() < mCurrentBet) {
-                        System.out.println("Insufficient money to call.");
-                        mPlayers[index].setChoice(0);
-                        break;
-                    }
-
-                    /* If check was successful, update game and player variables. */
-                    mPlayers[index].setMoney(mPlayers[index].getMoney() + mPlayers[index].getBet()- mCurrentBet);
-                    mPlayers[index].setBet(mCurrentBet);
-                    System.out.println("Called.");
-                    break;
-
-                /* Player folds. */
-                case 3:
-                    mPot = mPot + mPlayers[index].getBet();
-                    mPlayers[index].setBet(0);
-                    mPlayers[index].setFolded(true);
-                    System.out.println("Folded.");
-                    break;
-
-                default:
-                    System.out.println("Invalid input.");
-                    mPlayers[index].setChoice(0);
-
-            }
-        }
-
-
-    }
+//    /**
+//     * A player's turn. At each turn, a player can either raise, check, or fold.
+//     * @param index index of player whose turn is currently at play
+//     * @param noOfRaises no of raises in the round so far
+//     */
+//    public void playerTurn(int index, int noOfRaises) {
+//
+//        /* Skip player if she has folded. */
+//        if (mPlayers[index].hasFolded()) {
+//            return;
+//        }
+//
+//        /* Set player's choice to 0. */
+//        mPlayers[index].setChoice(0);
+//
+//        /* Display status of the game for player's information. */
+//        System.out.println();
+//        System.out.println("!!!PLAYER " + mPlayers[index].getName() + "'s TURN!!!");
+//        System.out.println("Community hand   : " + mCommunityHand.show());
+//        System.out.println("Current game bet : " + mCurrentBet);
+//        System.out.println("Pot              : " + mPot);
+//        System.out.println("Player " + mPlayers[index].getName() + "'s hand  : "
+//                + mPlayers[index].getHand().show());
+//        System.out.println("Player " + mPlayers[index].getName() + "'s money : "
+//                + mPlayers[index].getMoney());
+//        System.out.println("Player " + mPlayers[index].getName() + "'s bet : "
+//                + mPlayers[index].getBet());
+//
+//        /* Player makes a choice. */
+//        while (mPlayers[index].getChoice() == 0) {
+//            System.out.println("(1: raise, 2: call, 3: fold)");
+//            System.out.print("Player " + mPlayers[index].getName() + "'s move  : ");
+//            mPlayers[index].setChoice(mScanner.nextInt());
+//
+//            switch (mPlayers[index].getChoice()) {
+//
+//                /* Player raises.*/
+//                case 1:
+//
+//                    /* Give error message and force player to choose again if there has been 3 raises in a round. */
+//                    if (noOfRaises > 2) {
+//                        System.out.println("Cannot raise further in this round.");
+//                        mPlayers[index].setChoice(0);
+//                        break;
+//                    }
+//
+//                    /* Get the amount by which the player wishes to raise. */
+//                    System.out.print("Raise by         : ");
+//                    int raise = mScanner.nextInt();
+//
+//                    /* Give error message and force player to choose again if she has insufficient money. */
+//                    if (mPlayers[index].getMoney() + mPlayers[index].getBet() < mCurrentBet + raise) {
+//                        System.out.println("Insufficient money to raise.");
+//                        mPlayers[index].setChoice(0);
+//                        break;
+//                    }
+//
+//                    /* If raise was successful, update game and player variables. */
+//                    mCurrentBet = mCurrentBet + raise;
+//                    mPlayers[index].setMoney(mPlayers[index].getMoney() + mPlayers[index].getBet() - mCurrentBet );
+//                    mPlayers[index].setBet(mCurrentBet);
+//                    noOfRaises++;
+//                    break;
+//
+//                /* Player checks. */
+//                case 2:
+//
+//                    /* Give error message and force player to choose again if she has insufficient money. */
+//                    if (mPlayers[index].getMoney() + mPlayers[index].getBet() < mCurrentBet) {
+//                        System.out.println("Insufficient money to call.");
+//                        mPlayers[index].setChoice(0);
+//                        break;
+//                    }
+//
+//                    /* If check was successful, update game and player variables. */
+//                    mPlayers[index].setMoney(mPlayers[index].getMoney() + mPlayers[index].getBet()- mCurrentBet);
+//                    mPlayers[index].setBet(mCurrentBet);
+//                    System.out.println("Called.");
+//                    break;
+//
+//                /* Player folds. */
+//                case 3:
+//                    mPot = mPot + mPlayers[index].getBet();
+//                    mPlayers[index].setBet(0);
+//                    mPlayers[index].setFolded(true);
+//                    System.out.println("Folded.");
+//                    break;
+//
+//                default:
+//                    System.out.println("Invalid input.");
+//                    mPlayers[index].setChoice(0);
+//
+//            }
+//        }
+//
+//
+//    }
 
     /** Reset the choice parameter of players after each round of betting. */
     public void resetChoices() {
@@ -290,48 +316,47 @@ public class Game {
     }
 
     /**
-     * Check if everyone has either called or folded.
-     * Checked at the start of every player's turn, in case a full cycle has been completed and
-     * everyone has called/folded.
+     *  Check if everyone else has folded except the player whose index is the parameter.
+     *  Checked at the start of every player's turn, and if this is true, then current player is
+     *  the winner.
      */
-    public boolean checkCalledFolded() {
+    public boolean checkOthersFolded(int index) {
         int numberFolded = 0;
-        int numberCalled = 0;
 
-        /* Loop through every player. */
+        /* Loop through every player except current player. */
         for (Player player : mPlayers) {
-            if (player.hasFolded()) {
-                numberFolded++;
-            } else if (player.getChoice() == 2) {
-                numberCalled++;
+            /* Only add to counter if player*/
+            if (player != mPlayers[index]){
+                if (player.hasFolded()) {
+                    numberFolded++;
+                }
             }
         }
 
-        /* If everyone has either called or folded, return true. */
-        if (mNumberOfPlayers == (numberCalled + numberFolded)) {
+        /* If everyone has folded but one (i.e. current player), return true. */
+        if (mNumberOfPlayers == numberFolded + 1) {
             return true;
         } else {
             return false;
         }
     }
 
-    /**
-     *  Check if everyone has folded.
-     *  Checked at the start of every player's turn, and if this is true, then current player is
-     *  the winner
-     */
-    public boolean checkFolded() {
-        int numberFolded = 0;
+    /* Check if everyone has either called or folded. Used at the start of a turn to ensure
+     * even when no one raises, when a one round has been completed, the round ends.*/
+    public boolean checkCalledFolded() {
+        int countFolded = 0;
+        int countCalled = 0;
 
-        /* Loop through every player. */
         for (Player player : mPlayers) {
-            if (player.hasFolded()) {
-                numberFolded++;
+            if (player.hasFolded()){
+                countFolded++;
+            }
+            else if(player.getChoice() == 2){
+                countCalled++;
             }
         }
 
-        /* If everyone has folded but one (i.e. current player), return true. */
-        if (mNumberOfPlayers == numberFolded + 1) {
+        if (mNumberOfPlayers == countCalled + countFolded){
             return true;
         } else {
             return false;
