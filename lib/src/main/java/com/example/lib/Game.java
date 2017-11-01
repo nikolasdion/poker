@@ -13,11 +13,11 @@ public class Game {
     Scanner mScanner = new Scanner( System.in );
     private int mNumberOfPlayers;
     private Player[] mPlayers;
-    private boolean mIsPlaying = true; //whether players want to continue playing
+    private boolean mIsPlaying = true; // Whether players want to continue playing
 
     /** Variables that reset every game. */
     private int mPot;
-    private int mCurrentBet; //Current bet (if player checks, her bet is matched with this value)
+    private int mCurrentBet; // Current bet (if player checks, her bet is matched with this value)
     private Deck mDeck;
     private Hand mCommunityHand = new Hand();
     private boolean mShowdown = false; // Whether showdown is required at the end
@@ -92,17 +92,17 @@ public class Game {
             bettingRound();
 
             if (mWinner != -1) {
-                return; //end betting stage if there is already a winner
+                return; // End betting stage if there is already a winner
             }
 
             System.out.println();
             System.out.println("Round has ended.");
 
             if (round <3) {
-                dealCommunity(1); //deal one card to community hand after the end of each round
+                dealCommunity(1); // Deal one card to community hand after the end of each round
             }
             displayStatus();
-            resetChoices(); // folded players are still recorded in hasFolded attribute
+            resetChoices(); // Folded players are still recorded in hasFolded attribute
 
             if (round == 3) {
                 mShowdown = true;

@@ -19,11 +19,11 @@ public class Player {
      * @param name name of player
      */
     Player(int money, String name) {
-        setMoney(money);
-        setName(name);
-        setChoice(0);
-        setBet(0);
-        setFolded(false);
+        mMoney = money;
+        mName = name;
+        mChoice = 0;
+        mBet = 0;
+        mHasFolded = false;
     }
 
     public void setMoney(int money) {

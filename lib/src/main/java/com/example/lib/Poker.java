@@ -42,7 +42,6 @@ public class Poker {
 
             /* Ask if players want to play another game. */
             game.cont();
-
         }
 
         /* Display players' money at the end of the game.  */
