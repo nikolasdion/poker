@@ -33,9 +33,12 @@ public class Game {
         mNumberOfPlayers = numberOfPlayers;
         mPlayers = new Player[numberOfPlayers];
         mIsPlaying = true;
-        for (int i = 0; i < mNumberOfPlayers; i++) {
-            mPlayers[i] = new Player (initialMoney, String.valueOf(i+1));
+
+        /* Create Player objects in mPlayers array. */
+        for (int playerIndex = 0; playerIndex < mNumberOfPlayers; playerIndex++) {
+            mPlayers[playerIndex] = new Player(initialMoney, String.valueOf(playerIndex + 1));
         }
+
         reset();
     }
 
@@ -63,7 +66,7 @@ public class Game {
 
     /** Deal 2 cards to each player's hand.*/
     public void dealPlayers(int numberOfCards) {
-        for (Player player:mPlayers) {
+        for (Player player : mPlayers) {
             Hand tempHand = new Hand();
             for (int ii = 0; ii < numberOfCards; ii++) {
                 mDeck.dealTo(tempHand);
@@ -123,6 +126,7 @@ public class Game {
 
         while (noOfRaises < 4) {
             for (int index = 0; index < mNumberOfPlayers; index++) {
+
                 /* End betting round (and betting stage) if every player but one has folded. */
                 if (checkFolded()) {
                     mWinner = index;
@@ -134,7 +138,9 @@ public class Game {
                     return;
                 }
 
+                /* Initiate the current player's turn. */
                 playerTurn(index, noOfRaises);
+
                 /*If player raises, change the status of current raiser to this player
                  * and track number of raises. Maximum number of raises per round is 3.*/
                 if (mPlayers[index].getChoice()== 1) {
@@ -185,8 +191,9 @@ public class Game {
 
                 /* Player raises.*/
                 case 1:
+
                     /* Give error message and force player to choose again if there has been 3 raises in a round. */
-                    if (noOfRaises >2) {
+                    if (noOfRaises > 2) {
                         System.out.println("Cannot raise further in this round.");
                         mPlayers[index].setChoice(0);
                         break;
@@ -212,6 +219,7 @@ public class Game {
 
                 /* Player checks. */
                 case 2:
+
                     /* Give error message and force player to choose again if she has insufficient money. */
                     if (mPlayers[index].getMoney() + mPlayers[index].getBet() < mCurrentBet) {
                         System.out.println("Insufficient money to call.");
@@ -245,7 +253,7 @@ public class Game {
 
     /** Reset the choice parameter of players after each round of betting. */
     public void resetChoices() {
-        for (Player player:mPlayers) {
+        for (Player player : mPlayers) {
             player.setChoice(0);
         }
     }
@@ -264,7 +272,7 @@ public class Game {
 
                 /* Create a hand which contains both the player's hand and community hand. */
                 Hand tempHand = mPlayers[index].getHand();
-                for (Card communityCard:mCommunityHand.getCards()) {
+                for (Card communityCard : mCommunityHand.getCards()) {
                     tempHand.add(communityCard);
                 }
 
@@ -293,7 +301,7 @@ public class Game {
         int numberCalled = 0;
 
         /* Loop through every player. */
-        for (Player player:mPlayers) {
+        for (Player player : mPlayers) {
             if (player.hasFolded()) {
                 numberFolded++;
             } else if (player.getChoice() == 2) {
@@ -318,7 +326,7 @@ public class Game {
         int numberFolded = 0;
 
         /* Loop through every player. */
-        for (Player player:mPlayers) {
+        for (Player player : mPlayers) {
             if (player.hasFolded()) {
                 numberFolded++;
             }
@@ -336,7 +344,7 @@ public class Game {
     public void reward() {
 
         /* Empty every player's bet into the pot (later given to the winner). */
-        for (Player player:mPlayers) {
+        for (Player player : mPlayers) {
             mPot += player.getBet();
             player.setBet(0);
         }
@@ -350,7 +358,7 @@ public class Game {
 
         /* Display everyone's money after the winner has been rewarded. */
         System.out.println();
-        for (Player player:mPlayers) {
+        for (Player player : mPlayers) {
             System.out.println("Player " + player.getName() + "'s money : "  + player.getMoney());
         }
         System.out.println();
@@ -371,7 +379,7 @@ public class Game {
         mDeck = tempDeck;
 
         Hand emptyHand = new Hand();
-        for (Player player:mPlayers) {
+        for (Player player : mPlayers) {
             player.setHand(emptyHand);
             player.setChoice(0);
             player.setFolded(false);
@@ -408,7 +416,7 @@ public class Game {
     public void statusEnd() {
         System.out.println("!!!!!! GAME HAS ENDED !!!!!!");
 
-        for (Player player:mPlayers) {
+        for (Player player : mPlayers) {
             System.out.println("Player " + player.getName() + "'s money : " + player.getMoney());
         }
 

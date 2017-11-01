@@ -50,7 +50,7 @@ public class Hand {
         String temp = "";
 
         /* Loop through all the cards in the deck. */
-        for (Card card:mCards) {
+        for (Card card : mCards) {
             temp = temp + card.strCard() + " ";
         }
 
@@ -91,7 +91,7 @@ public class Hand {
         Hand highestHand = new Hand();
 
         /* Loop through all possible 5-card hand combination. */
-        for (Hand combination:combinations(5)) {
+        for (Hand combination : combinations(5)) {
             if (combination.absoluteRank()> highest) {
                 highest = combination.absoluteRank();
                 highestHand = combination;
@@ -112,7 +112,7 @@ public class Hand {
 
         /* 1-card combinations, which are just hands each with one of the cards of the original hand. */
         if (k == 1) {
-            for (Card card:mCards) {
+            for (Card card : mCards) {
                 Hand tempHand = new Hand();
                 tempHand.add(card);
                 combinations.add(tempHand);
@@ -278,10 +278,10 @@ public class Hand {
             count = 0;
 
             /* Loop through the subsequent values.*/
-            for (int j = start ; j < inv.length; j++) {
+            for (int currentIndex = start ; currentIndex < inv.length; currentIndex++) {
 
                 /* Check if there are cards with the value.*/
-                if (inv[j] == 0) {
+                if (inv[currentIndex] == 0) {
                     break; // Break the loop if there are no cards with the value.
                 } else {
                     count++; // Increase the counter if there are cards with the value
@@ -290,7 +290,7 @@ public class Hand {
                 /* Once there has been 5 consecutive cards, the hand is a straight. */
                 if (count ==5) {
                     mType = 5;
-                    mRank = j + 2;
+                    mRank = currentIndex + 2;
                     return true;
                 }
             }
@@ -303,13 +303,13 @@ public class Hand {
         * The number of cards with value n is stored in index n-2. */
         int[] inv = inventory();
 
-        /* Loop through the different values. */
-        for (int i = 0; i < 13; i++) {
+        /* Loop through the inventory. */
+        for (int index = 0; index < 13; index++) {
 
             /* If there are 3 cards of the same value, the hand is a three of a kind. */
-            if (inv[i] == 3) {
+            if (inv[index] == 3) {
                 mType = 4;
-                mRank = i + 2;
+                mRank = index + 2;
                 return true;
             }
         }
@@ -325,12 +325,12 @@ public class Hand {
         int[] inv = inventory();
 
         /* Loop through the inventory. */
-        for (int i = 0; i < 13; i++) {
+        for (int index = 0; index < 13; index++) {
 
             /* If there are 2 cards of the same value, the hand has a pair. */
-            if (inv[i] == 2) {
-                numberOfPairs += 1;
-                highestPair = i + 2;
+            if (inv[index] == 2) {
+                numberOfPairs++;
+                highestPair = index + 2;
             }
         }
 
@@ -344,7 +344,6 @@ public class Hand {
         }
     }
 
-
     private boolean isPair() {
 
         /* Create an inventory of the hand, which stores how many cards have each value.
@@ -352,11 +351,11 @@ public class Hand {
         int[] inv = inventory();
 
         /* Loop through the inventory. */
-        for (int i = 0; i < 13; i++) {
+        for (int index = 0; index < 13; index++) {
             /* If there are 2 cards of the same value, the hand is a pair. */
-            if (inv[i] == 2) {
+            if (inv[index] == 2) {
                 mType = 2;
-                mRank = i + 2;
+                mRank = index + 2;
                 return true;
             }
         }
@@ -375,7 +374,7 @@ public class Hand {
 
         /* Loop through the cards in the hand. Increase the inventory based on the values of the card. */
         for (Card card:mCards) {
-            inv[card.getValue() - 2] += 1;
+            inv[card.getValue() - 2]++;
         }
         return inv;
     }
@@ -390,7 +389,7 @@ public class Hand {
 
         /* Loop through the cards in the hand. Update highest value if the card is higher than the
          * current card. */
-        for (Card card:mCards) {
+        for (Card card : mCards) {
             if (card.absValue()>highest.absValue()) {
                 highest = card;
             }
