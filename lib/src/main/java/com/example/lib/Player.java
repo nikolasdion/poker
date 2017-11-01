@@ -6,12 +6,12 @@ package com.example.lib;
  */
 
 public class Player {
-    private int money;
-    private Hand hand = new Hand();
-    private String name;
-    private int choice; // Player's action (1: raise, 2: check, 3: fold)
-    private int bet; // The amount of money the player is betting in the current game.
-    private boolean hasFolded;
+    private int mMoney;
+    private Hand mHand = new Hand();
+    private String mName;
+    private int mChoice; // Player's action (1: raise, 2: check, 3: fold)
+    private int mBet; // The amount of money the player is betting in the current game.
+    private boolean mHasFolded;
 
     /**
      * Initialise a player with some money and a name.
@@ -27,51 +27,51 @@ public class Player {
     }
 
     public void setMoney(int money) {
-        this.money = money;
+        mMoney = money;
     }
 
     public void setHand(Hand hand) {
-        this.hand = hand;
+        mHand = hand;
     }
 
     public void setName(String name) {
-        this.name = name;
+        mName = name;
     }
 
     public void setChoice(int choice) {
-        this.choice = choice;
+        mChoice = choice;
     }
 
     public void setBet(int bet) {
-        this.bet = bet;
+        mBet = bet;
     }
 
     public void setFolded(boolean hasFolded) {
-        this.hasFolded = hasFolded;
+        mHasFolded = hasFolded;
     }
 
     public int getMoney() {
-        return money;
+        return mMoney;
     }
 
     public Hand getHand() {
-        return hand;
+        return mHand;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public int getChoice() {
-        return choice;
+        return mChoice;
     }
 
     public int getBet() {
-        return bet;
+        return mBet;
     }
 
     public boolean hasFolded() {
-        return hasFolded;
+        return mHasFolded;
     }
 
 

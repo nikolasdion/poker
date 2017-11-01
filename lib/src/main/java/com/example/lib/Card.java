@@ -7,8 +7,8 @@ package com.example.lib;
  */
 
 public class Card {
-    private int value; // Suit is represented as a number 1-4 from clubs to spades.
-    private int suit; // Value is represented as a number 2-14 from 2 to ace.
+    private int mValue; // Suit is represented as a number 1-4 from clubs to spades.
+    private int mSuit; // Value is represented as a number 2-14 from 2 to ace.
 
     Card(int value, int suit) {
         setValue(value);
@@ -23,25 +23,25 @@ public class Card {
         String showValue = "";
         String showSuit = "";
 
-        if ((value > 1) && (value < 11)) {
-            showValue = String.valueOf(this.value);
-        } else if (value == 11) {
+        if ((mValue > 1) && (mValue < 11)) {
+            showValue = String.valueOf(mValue);
+        } else if (mValue == 11) {
             showValue = "J";
-        } else if (value == 12) {
+        } else if (mValue == 12) {
             showValue = "Q";
-        } else if (value == 13) {
+        } else if (mValue == 13) {
             showValue = "K";
-        } else if (value == 14) {
+        } else if (mValue == 14) {
             showValue = "A";
         }
 
-        if (suit == 1 ) {
+        if (mSuit == 1 ) {
             showSuit = "C";
-        } else if (suit == 2) {
+        } else if (mSuit == 2) {
             showSuit = "D";
-        } else if (suit == 3) {
+        } else if (mSuit == 3) {
             showSuit = "H";
-        } else if (suit == 4) {
+        } else if (mSuit == 4) {
             showSuit = "S";
         }
 
@@ -49,28 +49,28 @@ public class Card {
     }
 
     /**
-     *  Generate absolute value (i.e. rank) of the card. The formula is 4*value + suit.
+     *  Generate absolute value (i.e. rank) of the card. The formula is 4*value + mSuit.
      *  This is used to compare the value of the card (to find which is highest).
      *  @return absolute value of the card
      */
     public int absValue() {
-         return value*4 + suit;
+         return mValue*4 + mSuit;
     }
 
     public void setValue(int value) {
-        this.value = value;
+        mValue = value;
     }
 
     public void setSuit(int suit) {
-        this.suit = suit;
+        mSuit = suit;
     }
 
     public int getValue() {
-        return value;
+        return mValue;
     }
 
     public int getSuit() {
-        return suit;
+        return mSuit;
     }
 
 

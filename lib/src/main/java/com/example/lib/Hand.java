@@ -12,16 +12,16 @@ import java.util.ArrayList;
 
 public class Hand {
 
-    ArrayList<Card> cards = new ArrayList<>(); // Cards contained in the hand.
-    private int type;  //  Type, e.g. straight flush (9), four of a kind (8), .... pair(2), highest card(1)
-    private int rank;  //  Rank within the type of hand
+    ArrayList<Card> mCards = new ArrayList<>(); // Cards contained in the hand.
+    private int mType;  //  Type, e.g. straight flush (9), four of a kind (8), .... pair(2), highest card(1)
+    private int mRank;  //  Rank within the type of hand
 
     /**
      *  By default initialise an empty hand.
      */
     Hand() {
-        type = 0;
-        rank = 0;
+        mType = 0;
+        mRank = 0;
     }
 
     /**
@@ -29,17 +29,17 @@ public class Hand {
      *  @param cards an ArrayList of cards to be included in the hand
      */
     Hand(ArrayList<Card> cards) {
-        this.cards = cards;
-        type = 0;
-        rank = 0;
+        mCards = cards;
+        mType = 0;
+        mRank = 0;
     }
 
     public ArrayList<Card> getCards() {
-        return cards;
+        return mCards;
     }
 
     public void setCards(ArrayList<Card> cards) {
-        this.cards = cards;
+        mCards = cards;
     }
 
     /**
@@ -48,8 +48,8 @@ public class Hand {
      */
     String show() {
         String temp = "";
-        for (int i = 0; i < cards.size(); i++) {
-            temp = temp + cards.get(i).strCard() + " ";
+        for (int i = 0; i < mCards.size(); i++) {
+            temp = temp + mCards.get(i).strCard() + " ";
         }
         return temp;
     }
@@ -59,7 +59,7 @@ public class Hand {
      * @param card card to be added to the hand
      */
     void add(Card card) {
-        cards.add(card);
+        mCards.add(card);
     }
 
     /**
@@ -68,7 +68,7 @@ public class Hand {
      * @param i index of the card
      * */
     Card get(int i) {
-        return cards.get(i);
+        return mCards.get(i);
     }
 
     /**
@@ -76,7 +76,7 @@ public class Hand {
      *  @return number of cards in the hand
      */
     int size() {
-        return cards.size();
+        return mCards.size();
     }
 
     /**
@@ -103,7 +103,7 @@ public class Hand {
     public ArrayList<Hand> combinations(int k) {
         ArrayList<Hand> combinations = new ArrayList<>();
         if (k == 1) {
-            for (Card card:cards) {
+            for (Card card:mCards) {
                 Hand tempHand = new Hand();
                 tempHand.add(card);
                 combinations.add(tempHand);
@@ -111,7 +111,7 @@ public class Hand {
             return combinations;
         }
 
-        else if (k == cards.size()) {
+        else if (k == mCards.size()) {
             combinations.add(this);
             return combinations;
         }
@@ -138,30 +138,30 @@ public class Hand {
      */
     public int absoluteRank() {
         checkTypeRank();
-        return (100 * this.type) + this.rank;
+        return (100 * mType) + mRank;
     }
 
     /** Check and save the type and rank of the hand. */
     public void checkTypeRank() {
-        if (this.isStraightFlush()) {
+        if (isStraightFlush()) {
 
-        } else if (this.isFourOfAKind()) {
+        } else if (isFourOfAKind()) {
 
-        } else if (this.isFullHouse()) {
+        } else if (isFullHouse()) {
 
-        } else if (this.isFlush()) {
+        } else if (isFlush()) {
 
-        } else if (this.isStraight()) {
+        } else if (isStraight()) {
 
-        } else if (this.isThreeOfAKind()) {
+        } else if (isThreeOfAKind()) {
 
-        } else if (this.isDoublePair()) {
+        } else if (isDoublePair()) {
 
-        } else if (this.isPair()) {
+        } else if (isPair()) {
 
         } else {
-            this.type = 1;
-            this.rank = this.highestCard().absValue();
+            mType = 1;
+            mRank = highestCard().absValue();
         }
     }
 
@@ -175,8 +175,8 @@ public class Hand {
 
     private boolean isStraightFlush() {
         if (isStraight() && isFlush()) {
-            type = 9;
-            rank = highestCard().absValue();
+            mType = 9;
+            mRank = highestCard().absValue();
             return true;
         }
         else {
@@ -188,8 +188,8 @@ public class Hand {
         int [] inv = inventory();
         for (int i=0 ; i<13; i++) {
             if (inv[i] == 4) {
-                type = 8;
-                rank = i+2;
+                mType = 8;
+                mRank = i+2;
                 return true;
             }
         }
@@ -197,8 +197,8 @@ public class Hand {
     }
 
     private boolean isFullHouse() {
-        if (this.isPair() && this.isThreeOfAKind()) {
-            type = 7; // Rank is already determined by isThreeOfAKind
+        if (isPair() && isThreeOfAKind()) {
+            mType = 7; // Rank is already determined by isThreeOfAKind
             return true;
         }
         else {
@@ -211,7 +211,7 @@ public class Hand {
         int hearts = 0;
         int diamonds = 0;
         int clubs = 0;
-        for (Card card : cards) {
+        for (Card card : mCards) {
             switch (card.getSuit()) {
                 case 1:
                     clubs = clubs + 1;
@@ -228,8 +228,8 @@ public class Hand {
             }
         }
         if (spades == 5 || hearts == 5 || diamonds == 5 || clubs == 5) {
-            type = 6;
-            rank = highestCard().absValue();
+            mType = 6;
+            mRank = highestCard().absValue();
             return true;
         } else {
             return false;
@@ -249,8 +249,8 @@ public class Hand {
                }
 
                if (count ==5) {
-                   type = 5;
-                   rank = j + 2;
+                   mType = 5;
+                   mRank = j + 2;
                    return true;
                }
            }
@@ -259,11 +259,11 @@ public class Hand {
     }
 
     private boolean isThreeOfAKind() {
-        int[] inv = this.inventory();
+        int[] inv = inventory();
         for (int i = 0; i < 13; i++) {
             if (inv[i] == 3) {
-                this.type = 4;
-                this.rank = i + 2;
+                mType = 4;
+                mRank = i + 2;
                 return true;
             }
         }
@@ -281,8 +281,8 @@ public class Hand {
             }
         }
         if (numberOfPairs == 2) {
-            type = 3;
-            rank = highestPair;
+            mType = 3;
+            mRank = highestPair;
             return true;
         } else {
             return false;
@@ -293,8 +293,8 @@ public class Hand {
         int[] inv = inventory();
         for (int i = 0; i < 13; i++) {
             if (inv[i] == 2) {
-                type = 2;
-                rank = i + 2;
+                mType = 2;
+                mRank = i + 2;
                 return true;
             }
         }
@@ -309,7 +309,7 @@ public class Hand {
      */
     int[] inventory() {
         int[] inv = new int[13];
-        for (Card card:cards) {
+        for (Card card:mCards) {
             inv[card.getValue() - 2] += 1;
         }
         return inv;
@@ -320,8 +320,8 @@ public class Hand {
      *  @return highest card in the hand
      */
     Card highestCard() {
-        Card highest = this.cards.get(0);
-        for (Card card:this.cards) {
+        Card highest = mCards.get(0);
+        for (Card card:mCards) {
             if (card.absValue()>highest.absValue()) {
                 highest = card;
             }

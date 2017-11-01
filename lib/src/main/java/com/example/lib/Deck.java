@@ -7,7 +7,7 @@ import java.util.Collections;
  */
 
 public class Deck{
-    private ArrayList<Card> cards = new ArrayList<Card>();
+    private ArrayList<Card> mCards = new ArrayList<Card>();
 
     /**
      * Create a deck with 52 cards from 2 of clubs to ace of spades
@@ -29,12 +29,12 @@ public class Deck{
      * @param cards cards which will be in the deck
      */
     Deck(ArrayList cards) {
-        this.cards = cards;
+        setCards(cards);
     }
 
     /** Shuffle deck. */
     public void shuffle() {
-        Collections.shuffle(cards);
+        Collections.shuffle(mCards);
         System.out.println("Deck shuffled.");
     }
 
@@ -44,7 +44,7 @@ public class Deck{
      * @param hand the hand to which the card is dealt
      */
     public void dealTo(Hand hand) {
-        hand.add(cards.remove(0));
+        hand.add(mCards.remove(0));
     }
 
     /**
@@ -54,8 +54,8 @@ public class Deck{
      */
     public String show() {
         String temp = "";
-        for (int i = 0; i<cards.size(); i++ ) {
-            temp = temp + cards.get(i).strCard() + " ";
+        for (int i = 0; i<mCards.size(); i++ ) {
+            temp = temp + mCards.get(i).strCard() + " ";
         }
         return temp;
     }
@@ -66,15 +66,15 @@ public class Deck{
      * @return number of cards in the deck
      */
     public int size() {
-        return cards.size();
+        return mCards.size();
     }
 
     public ArrayList<Card> getCards() {
-        return cards;
+        return mCards;
     }
 
     public void setCards(ArrayList<Card> cards) {
-        this.cards = cards;
+        mCards = cards;
     }
 
 
