@@ -91,19 +91,23 @@ public class Game {
 
             bettingRound();
 
+            /* End betting stage if there is already a winner. */
             if (mWinner != -1) {
-                return; // End betting stage if there is already a winner
+                return;
             }
 
             System.out.println();
             System.out.println("Round has ended.");
 
+            /* Deal one card to community hand after the end of each round except the final one. */
             if (round <3) {
-                dealCommunity(1); // Deal one card to community hand after the end of each round
+                dealCommunity(1);
             }
+
             displayStatus();
             resetChoices(); // Folded players are still recorded in hasFolded attribute
 
+            /* Set showdown if no winner has been decided after the third round. */
             if (round == 3) {
                 mShowdown = true;
             }
@@ -149,6 +153,7 @@ public class Game {
      * @param noOfRaises no of raises in the round so far
      */
     public void playerTurn(int index, int noOfRaises) {
+
         /* Skip player if she has folded. */
         if (mPlayers[index].hasFolded()) {
             return;
@@ -175,21 +180,30 @@ public class Game {
             System.out.println("(1: raise, 2: call, 3: fold)");
             System.out.print("Player " + mPlayers[index].getName() + "'s move  : ");
             mPlayers[index].setChoice(mScanner.nextInt());
+
             switch (mPlayers[index].getChoice()) {
+
                 /* Player raises.*/
                 case 1:
+                    /* Give error message and force player to choose again if there has been 3 raises in a round. */
                     if (noOfRaises >2) {
                         System.out.println("Cannot raise further in this round.");
                         mPlayers[index].setChoice(0);
                         break;
                     }
+
+                    /* Get the amount by which the player wishes to raise. */
                     System.out.print("Raise by         : ");
                     int raise = mScanner.nextInt();
+
+                    /* Give error message and force player to choose again if she has insufficient money. */
                     if (mPlayers[index].getMoney() + mPlayers[index].getBet() < mCurrentBet + raise) {
                         System.out.println("Insufficient money to raise.");
                         mPlayers[index].setChoice(0);
                         break;
                     }
+
+                    /* If raise was successful, update game and player variables. */
                     mCurrentBet = mCurrentBet + raise;
                     mPlayers[index].setMoney(mPlayers[index].getMoney() + mPlayers[index].getBet() - mCurrentBet );
                     mPlayers[index].setBet(mCurrentBet);
@@ -198,11 +212,14 @@ public class Game {
 
                 /* Player checks. */
                 case 2:
+                    /* Give error message and force player to choose again if she has insufficient money. */
                     if (mPlayers[index].getMoney() + mPlayers[index].getBet() < mCurrentBet) {
                         System.out.println("Insufficient money to call.");
                         mPlayers[index].setChoice(0);
                         break;
                     }
+
+                    /* If check was successful, update game and player variables. */
                     mPlayers[index].setMoney(mPlayers[index].getMoney() + mPlayers[index].getBet()- mCurrentBet);
                     mPlayers[index].setBet(mCurrentBet);
                     System.out.println("Called.");
@@ -238,7 +255,11 @@ public class Game {
         int highest = 0;
         System.out.println();
         System.out.println("!!! SHOWDOWN !!!");
+
+        /* Loop through every player who has not folded. */
         for (int index = 0; index < mNumberOfPlayers; index++) {
+
+            /* Check that player has not folded. */
             if (mPlayers[index].hasFolded() == false) {
 
                 /* Create a hand which contains both the player's hand and community hand. */
@@ -270,6 +291,8 @@ public class Game {
     public boolean checkCalledFolded() {
         int numberFolded = 0;
         int numberCalled = 0;
+
+        /* Loop through every player. */
         for (Player player:mPlayers) {
             if (player.hasFolded()) {
                 numberFolded++;
@@ -277,10 +300,11 @@ public class Game {
                 numberCalled++;
             }
         }
+
+        /* If everyone has either called or folded, return true. */
         if (mNumberOfPlayers == (numberCalled + numberFolded)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -292,21 +316,25 @@ public class Game {
      */
     public boolean checkFolded() {
         int numberFolded = 0;
+
+        /* Loop through every player. */
         for (Player player:mPlayers) {
             if (player.hasFolded()) {
                 numberFolded++;
             }
         }
+
+        /* If everyone has folded but one (i.e. current player), return true. */
         if (mNumberOfPlayers == numberFolded + 1) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
     /** Reward winner of current game with money in the pot. */
     public void reward() {
+
         /* Empty every player's bet into the pot (later given to the winner). */
         for (Player player:mPlayers) {
             mPot += player.getBet();
@@ -319,6 +347,8 @@ public class Game {
         System.out.println(mPot + " has been added to Player " + mPlayers[mWinner].getName());
         mPlayers[mWinner].setMoney(mPlayers[mWinner].getMoney() + mPot);
         mPot = 0;
+
+        /* Display everyone's money after the winner has been rewarded. */
         System.out.println();
         for (Player player:mPlayers) {
             System.out.println("Player " + player.getName() + "'s money : "  + player.getMoney());
@@ -328,12 +358,14 @@ public class Game {
 
     /** Setup for a new game after continuing. */
     public void reset() {
+        /* Reset game variables. */
         resetChoices();
         mWinner = -1;
         mShowdown = false;
         mCurrentBet = 0 ;
         mPot = 0;
 
+        /* Create a new deck and empty the players' and community hands. */
         Deck tempDeck = new Deck();
         tempDeck.shuffle();
         mDeck = tempDeck;
@@ -351,9 +383,13 @@ public class Game {
     /** Checks whether players want to continue playing after someone wins current game. */
     public void cont() {
         int cont = 0;
+
+        /* Loop until player inputs acceptable response. */
         while (cont == 0) {
             System.out.println("Do you want to continue? (1: yes, 2: no)");
             cont = mScanner.nextInt();
+
+            /* Update mIsPlaying based on user's input. Force user to choose again if input was neither 1 nor 2. */
             switch (cont) {
                 case 1:
                     mIsPlaying = true;
@@ -371,9 +407,11 @@ public class Game {
     /** Print everyone's money at the end of a game. */
     public void statusEnd() {
         System.out.println("!!!!!! GAME HAS ENDED !!!!!!");
+
         for (Player player:mPlayers) {
             System.out.println("Player " + player.getName() + "'s money : " + player.getMoney());
         }
+
         System.out.println("Thank you for playing!");
     }
 

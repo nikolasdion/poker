@@ -23,6 +23,7 @@ public class Card {
         String showValue = "";
         String showSuit = "";
 
+        /* Get a string containing showing the value of the card. */
         if ((mValue > 1) && (mValue < 11)) {
             showValue = String.valueOf(mValue);
         } else if (mValue == 11) {
@@ -35,6 +36,7 @@ public class Card {
             showValue = "A";
         }
 
+        /* Get a string containing showing the suit of the card. */
         if (mSuit == 1 ) {
             showSuit = "C";
         } else if (mSuit == 2) {

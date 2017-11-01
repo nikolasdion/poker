@@ -15,6 +15,8 @@ public class Deck{
      */
     Deck() {
         ArrayList<Card> unshuffledDeck = new ArrayList<>();
+
+        /* Add cards to unshuffled deck. */
         for (int i = 1; i < 5; i++) {
             for (int j = 2; j < 15; j++) {
                 Card temp = new Card(j, i);
@@ -54,9 +56,11 @@ public class Deck{
      */
     public String show() {
         String temp = "";
+
         for (int i = 0; i<mCards.size(); i++ ) {
             temp = temp + mCards.get(i).strCard() + " ";
         }
+
         return temp;
     }
 

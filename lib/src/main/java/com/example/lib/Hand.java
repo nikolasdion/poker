@@ -48,9 +48,12 @@ public class Hand {
      */
     String show() {
         String temp = "";
-        for (int i = 0; i < mCards.size(); i++) {
-            temp = temp + mCards.get(i).strCard() + " ";
+
+        /* Loop through all the cards in the deck. */
+        for (Card card:mCards) {
+            temp = temp + card.strCard() + " ";
         }
+
         return temp;
     }
 
@@ -86,22 +89,28 @@ public class Hand {
     public Hand getBestHand() {
         int highest = 0;
         Hand highestHand = new Hand();
+
+        /* Loop through all possible 5-card hand combination. */
         for (Hand combination:combinations(5)) {
             if (combination.absoluteRank()> highest) {
                 highest = combination.absoluteRank();
                 highestHand = combination;
             }
         }
+
         return highestHand;
     }
 
     /**
-     * Out of the cards in the hand, return combinations of k cards.
+     * Out of the cards in the hand, return combinations of k cards. This function is defined
+     * recursively.
      * @return ArrayList of hands which are k cards combinations of current hand
      * @param k number of cards
      */
     public ArrayList<Hand> combinations(int k) {
         ArrayList<Hand> combinations = new ArrayList<>();
+
+        /* 1-card combinations, which are just hands each with one of the cards of the original hand. */
         if (k == 1) {
             for (Card card:mCards) {
                 Hand tempHand = new Hand();
@@ -111,21 +120,26 @@ public class Hand {
             return combinations;
         }
 
+        /* k-card combinations, where k is the same as the number of card of the original hand.
+         * This returns the an arraylist containing a hand identical to the original hand */
         else if (k == mCards.size()) {
             combinations.add(this);
             return combinations;
         }
 
-        for (int i = 0; i < size() - k + 1; i++ ) {
-            Card head = get(i);
-            Hand tail = new Hand();
-            for (int j = i+1; j < size(); j++) {
-                tail.add(get(j));
-            }
-            ArrayList<Hand> tailComb = tail.combinations(k - 1);
-            for (Hand hand:tailComb) {
-                hand.add(head);
-                combinations.add(hand);
+        /* If k is neither of the first two scenarios, follow this recursive method. */
+        else {
+            for (int i = 0; i < size() - k + 1; i++ ) {
+                Card head = get(i);
+                Hand tail = new Hand();
+                for (int j = i + 1; j < size(); j++) {
+                    tail.add(get(j));
+                }
+                ArrayList<Hand> tailComb = tail.combinations(k - 1);
+                for (Hand hand : tailComb) {
+                    hand.add(head);
+                    combinations.add(hand);
+                }
             }
         }
         return combinations;
@@ -174,22 +188,29 @@ public class Hand {
      */
 
     private boolean isStraightFlush() {
+
+        /* Check if the hand is both straight and flush. */
         if (isStraight() && isFlush()) {
             mType = 9;
             mRank = highestCard().absValue();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
     private boolean isFourOfAKind() {
+        /* Create an inventory of the hand, which stores how many cards have each value.
+        * The number of cards with value n is stored in index n-2. */
         int [] inv = inventory();
-        for (int i=0 ; i<13; i++) {
-            if (inv[i] == 4) {
+
+        /* Loop through the inventory. */
+        for (int index=0 ; index<13; index++) {
+
+            /* Check if there are 4 cards with this value in the hand. */
+            if (inv[index] == 4) {
                 mType = 8;
-                mRank = i+2;
+                mRank = index+2;
                 return true;
             }
         }
@@ -197,21 +218,27 @@ public class Hand {
     }
 
     private boolean isFullHouse() {
+        /* Check if the hand contain both a pair and a three of a kind. */
         if (isPair() && isThreeOfAKind()) {
-            mType = 7; // Rank is already determined by isThreeOfAKind
+            mType = 7; // Rank is already determined by isThreeOfAKind.
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
     private boolean isFlush() {
+
+        /* Counters for the number of cards with the respective suits. */
         int spades = 0;
         int hearts = 0;
         int diamonds = 0;
         int clubs = 0;
+
+        /* Loop through the cards in the hand. */
         for (Card card : mCards) {
+
+            /* Increase the counter of the suit of the following card. */
             switch (card.getSuit()) {
                 case 1:
                     clubs = clubs + 1;
@@ -227,6 +254,8 @@ public class Hand {
                     break;
             }
         }
+
+        /* If there are 5 cards with the same suit, the hand is a flush. */
         if (spades == 5 || hearts == 5 || diamonds == 5 || clubs == 5) {
             mType = 6;
             mRank = highestCard().absValue();
@@ -237,30 +266,47 @@ public class Hand {
     }
 
     private boolean isStraight() {
-       int[] inv = inventory();
-       int count;
-       for (int i = 0; i < inv.length-5; i++) {
-           count = 0;
-           for (int j = i ; j < inv.length; j++) {
-               if (inv[j] == 0) {
-                   break;
-               } else {
-                   count++;
-               }
+        /* Create an inventory of the hand, which stores how many cards have each value.
+        * The number of cards with value n is stored in index n-2. */
+        int[] inv = inventory();
 
-               if (count ==5) {
-                   mType = 5;
-                   mRank = j + 2;
-                   return true;
-               }
-           }
-       }
-       return false;
+        /* Counter for the number of consecutive cards present. */
+        int count;
+
+        /* Loop through the possible starting value of a straight. */
+        for (int start = 0; start < inv.length-5; start++) {
+            count = 0;
+
+            /* Loop through the subsequent values.*/
+            for (int j = start ; j < inv.length; j++) {
+
+                /* Check if there are cards with the value.*/
+                if (inv[j] == 0) {
+                    break; // Break the loop if there are no cards with the value.
+                } else {
+                    count++; // Increase the counter if there are cards with the value
+                }
+
+                /* Once there has been 5 consecutive cards, the hand is a straight. */
+                if (count ==5) {
+                    mType = 5;
+                    mRank = j + 2;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean isThreeOfAKind() {
+        /* Create an inventory of the hand, which stores how many cards have each value.
+        * The number of cards with value n is stored in index n-2. */
         int[] inv = inventory();
+
+        /* Loop through the different values. */
         for (int i = 0; i < 13; i++) {
+
+            /* If there are 3 cards of the same value, the hand is a three of a kind. */
             if (inv[i] == 3) {
                 mType = 4;
                 mRank = i + 2;
@@ -273,13 +319,22 @@ public class Hand {
     private boolean isDoublePair() {
         int numberOfPairs = 0;
         int highestPair = 0;
+
+        /* Create an inventory of the hand, which stores how many cards have each value.
+        * The number of cards with value n is stored in index n-2. */
         int[] inv = inventory();
+
+        /* Loop through the inventory. */
         for (int i = 0; i < 13; i++) {
+
+            /* If there are 2 cards of the same value, the hand has a pair. */
             if (inv[i] == 2) {
                 numberOfPairs += 1;
                 highestPair = i + 2;
             }
         }
+
+        /* If there are two pairs, the hand is a double pair.*/
         if (numberOfPairs == 2) {
             mType = 3;
             mRank = highestPair;
@@ -289,15 +344,23 @@ public class Hand {
         }
     }
 
+
     private boolean isPair() {
+
+        /* Create an inventory of the hand, which stores how many cards have each value.
+        * The number of cards with value n is stored in index n-2. */
         int[] inv = inventory();
+
+        /* Loop through the inventory. */
         for (int i = 0; i < 13; i++) {
+            /* If there are 2 cards of the same value, the hand is a pair. */
             if (inv[i] == 2) {
                 mType = 2;
                 mRank = i + 2;
                 return true;
             }
         }
+
         return false;
     }
 
@@ -309,6 +372,8 @@ public class Hand {
      */
     int[] inventory() {
         int[] inv = new int[13];
+
+        /* Loop through the cards in the hand. Increase the inventory based on the values of the card. */
         for (Card card:mCards) {
             inv[card.getValue() - 2] += 1;
         }
@@ -320,7 +385,11 @@ public class Hand {
      *  @return highest card in the hand
      */
     Card highestCard() {
+        /* Set highest card to the first card. */
         Card highest = mCards.get(0);
+
+        /* Loop through the cards in the hand. Update highest value if the card is higher than the
+         * current card. */
         for (Card card:mCards) {
             if (card.absValue()>highest.absValue()) {
                 highest = card;
