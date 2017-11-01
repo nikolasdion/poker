@@ -19,16 +19,14 @@ public class Poker {
         int mInitialMoney = 1000;
 
         /* Game starts here. */
-        Game game = new Game(mNumberOfPlayers,mInitialMoney);
+        Game game = new Game(mNumberOfPlayers, mInitialMoney);
 
         while (game.isPlaying()) {
             game.reset();
 
             /* Deal cards to players and to community hand. */
-            game.dealPlayers();
-            game.dealCommunity();
-            game.dealCommunity();
-            game.dealCommunity();
+            game.dealPlayers(2);
+            game.dealCommunity(3);
             game.displayStatus();
 
             /* Betting stage. */

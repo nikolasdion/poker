@@ -62,21 +62,23 @@ public class Game {
     }
 
     /** Deal 2 cards to each player's hand.*/
-    public void dealPlayers() {
+    public void dealPlayers(int numberOfCards) {
         for (Player player:mPlayers) {
             Hand tempHand = new Hand();
-            for (int i = 0; i<2; i++) {
+            for (int ii = 0; ii < numberOfCards; ii++) {
                 mDeck.dealTo(tempHand);
             }
             player.setHand(tempHand);
         }
-        System.out.println("Two cards were dealt to each player.");
+        System.out.println(numberOfCards + " card(s) were dealt to each player.");
     }
 
     /** Deal a card to community hand. */
-    public void dealCommunity() {
-        mDeck.dealTo(mCommunityHand);
-        System.out.println("A card was dealt to community hand.");
+    public void dealCommunity(int numberOfCards) {
+        for(int ii = 0; ii < numberOfCards; ii++){
+            mDeck.dealTo(mCommunityHand);
+        }
+        System.out.println(numberOfCards + " card(s) were dealt to community hand.");
     }
 
     /**
@@ -97,7 +99,7 @@ public class Game {
             System.out.println("Round has ended.");
 
             if (round <3) {
-                dealCommunity(); //deal one card to community hand after the end of each round
+                dealCommunity(1); //deal one card to community hand after the end of each round
             }
             displayStatus();
             resetChoices(); // folded players are still recorded in hasFolded attribute

@@ -48,7 +48,7 @@ public class Deck{
     }
 
     /**
-     * Returns a string with the cards in the deck. Not used in actual game,but can be used for
+     * Returns a string with the cards in the deck. Not used in actual game, but can be used for
      * testing.
      * @return string displaying the cards in the deck
      */
@@ -61,7 +61,7 @@ public class Deck{
     }
 
     /**
-     * Returns the number of cards in the deck. Not used in actual game,but can be used for
+     * Returns the number of cards in the deck. Not used in actual game, but can be used for
      * testing.
      * @return number of cards in the deck
      */
