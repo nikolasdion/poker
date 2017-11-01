@@ -19,8 +19,7 @@ public class Deck{
         /* Add cards to unshuffled deck. */
         for (int i = 1; i < 5; i++) {
             for (int j = 2; j < 15; j++) {
-                Card temp = new Card(j, i);
-                unshuffledDeck.add(temp);
+                unshuffledDeck.add(new Card(j,i));
             }
         }
         setCards(unshuffledDeck);

@@ -67,11 +67,9 @@ public class Game {
     /** Deal 2 cards to each player's hand.*/
     public void dealPlayers(int numberOfCards) {
         for (Player player : mPlayers) {
-            Hand tempHand = new Hand();
             for (int ii = 0; ii < numberOfCards; ii++) {
-                mDeck.dealTo(tempHand);
+                mDeck.dealTo(player.getHand());
             }
-            player.setHand(tempHand);
         }
         System.out.println(numberOfCards + " card(s) were dealt to each player.");
     }
@@ -268,7 +266,7 @@ public class Game {
         for (int index = 0; index < mNumberOfPlayers; index++) {
 
             /* Check that player has not folded. */
-            if (mPlayers[index].hasFolded() == false) {
+            if (!mPlayers[index].hasFolded()) {
 
                 /* Create a hand which contains both the player's hand and community hand. */
                 Hand tempHand = mPlayers[index].getHand();
@@ -374,18 +372,16 @@ public class Game {
         mPot = 0;
 
         /* Create a new deck and empty the players' and community hands. */
-        Deck tempDeck = new Deck();
-        tempDeck.shuffle();
-        mDeck = tempDeck;
+        mDeck = new Deck();
+        mDeck.shuffle();
 
-        Hand emptyHand = new Hand();
         for (Player player : mPlayers) {
-            player.setHand(emptyHand);
+            player.setHand(new Hand());
             player.setChoice(0);
             player.setFolded(false);
         }
 
-        mCommunityHand = emptyHand;
+        mCommunityHand = new Hand();
     }
 
     /** Checks whether players want to continue playing after someone wins current game. */
