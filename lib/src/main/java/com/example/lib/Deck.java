@@ -17,9 +17,9 @@ public class Deck{
         ArrayList<Card> unshuffledDeck = new ArrayList<>();
 
         /* Add cards to unshuffled deck. */
-        for (int i = 1; i < 5; i++) {
-            for (int j = 2; j < 15; j++) {
-                unshuffledDeck.add(new Card(j,i));
+        for (Card.Suit suit : Card.Suit.values()) {
+            for (Card.Value value : Card.Value.values()) {
+                unshuffledDeck.add(new Card(value, suit));
             }
         }
         setCards(unshuffledDeck);

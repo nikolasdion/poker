@@ -52,25 +52,25 @@ public class Game {
         return mShowdown;
     }
 
-    public int getPot() {
-        return mPot;
-    }
-
-    public void setPot(int pot) {
-        mPot = pot;
-    }
-
-    public int getCurrentBet() {
-        return mCurrentBet;
-    }
-
-    public void setCurrentBet(int currentBet) {
-        mCurrentBet = currentBet;
-    }
-
-    public Hand getCommunityHand() {
-        return mCommunityHand;
-    }
+//    public int getPot() {
+//        return mPot;
+//    }
+//
+//    public void setPot(int pot) {
+//        mPot = pot;
+//    }
+//
+//    public int getCurrentBet() {
+//        return mCurrentBet;
+//    }
+//
+//    public void setCurrentBet(int currentBet) {
+//        mCurrentBet = currentBet;
+//    }
+//
+//    public Hand getCommunityHand() {
+//        return mCommunityHand;
+//    }
 
     /* METHODS */
 

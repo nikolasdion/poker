@@ -240,16 +240,16 @@ public class Hand {
 
             /* Increase the counter of the suit of the following card. */
             switch (card.getSuit()) {
-                case 1:
+                case ClUBS:
                     clubs = clubs + 1;
                     break;
-                case 2:
+                case DIAMONDS:
                     diamonds = diamonds + 1;
                     break;
-                case 3:
+                case HEARTS:
                     hearts = hearts + 1;
                     break;
-                case 4:
+                case SPADES:
                     spades = spades + 1;
                     break;
             }
@@ -374,7 +374,7 @@ public class Hand {
 
         /* Loop through the cards in the hand. Increase the inventory based on the values of the card. */
         for (Card card:mCards) {
-            inv[card.getValue() - 2]++;
+            inv[card.getValueInt()]++;
         }
         return inv;
     }
