@@ -11,17 +11,28 @@ public class Player {
     private int mMoney;
     private Hand mHand = new Hand();
     private String mName;
-    private Choice mChoice; // Player's action (1: raise, 2: call, 3: fold)
+    private Choice mChoice; // Player's choice (defined in enum below)
     private int mBet; // The amount of money the player is betting in the current game.
-//    private boolean mHasFolded;
     Scanner mScanner = new Scanner( System.in );
 
+    /**
+     * Player's choice. There are only 4 possible options. Default is UNDECLARED, but player may
+     * choose to either RAISE, CALL, or FOLD during her turn in the game.
+     *
+     * RAISE and CALL are reset at the start of every round using game.resetChoices(). FOLD only
+     * resets to UNDECLARED when a new game is started.
+     * */
     enum Choice {
         RAISE,
         CALL,
         FOLD,
         UNDECLARED;
 
+        /**
+         *  Given an integer (from user's input), get a Choice corresponding to that integer.
+         *  @param x integer (from user's input)
+         *  @return Choice corresponding to the integer (1: RAISE, 2: CALL, 3: FOLD)
+         */
         public static Choice fromInt(int x) {
             switch(x) {
                 case 1:

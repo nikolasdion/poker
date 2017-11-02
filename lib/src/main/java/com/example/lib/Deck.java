@@ -22,7 +22,8 @@ public class Deck{
                 unshuffledDeck.add(new Card(value, suit));
             }
         }
-        setCards(unshuffledDeck);
+
+        mCards = unshuffledDeck;
     }
 
     /**
@@ -30,7 +31,7 @@ public class Deck{
      * @param cards cards which will be in the deck
      */
     Deck(ArrayList cards) {
-        setCards(cards);
+        mCards = cards;
     }
 
     /** Shuffle deck. */

@@ -2,16 +2,21 @@ package com.example.lib;
 
 /**
  * Represents a card.
- * Suit is represented as a number 1-4 from clubs to spades.
- * Value is represented as a number 2-14 from 2 to ace.
  */
 
 public class Card {
-    private Value mValue; // Suit is represented as a number 1-4 from clubs to spades.
-    private Suit mSuit; // Value is represented as a number 2-14 from 2 to ace.
+    private Value mValue;
+    private Suit mSuit;
 
+    /**
+     * The suits of a card. suitInt is the integer corresponding to the relative rank of the suit
+     * (clubs are lowest, spades are highest).
+     * */
     public enum Suit {
-        ClUBS(0), DIAMONDS(1), HEARTS(2), SPADES(3);
+        ClUBS(0),
+        DIAMONDS(1),
+        HEARTS(2),
+        SPADES(3);
 
         private int suitInt;
 
@@ -25,6 +30,10 @@ public class Card {
 
     }
 
+    /**
+     * The values of a card. valueInt is the integer corresponding to the relative rank of the value
+     * (twos are lowest, aces are highest).
+     * */
     public enum Value {
         TWO(0),
         THREE(1),
@@ -113,7 +122,6 @@ public class Card {
     }
 
     public Value getValue() {
-
         return mValue;
     }
 

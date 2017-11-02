@@ -59,7 +59,7 @@ public class Game {
         System.out.println("Pot              : " + mPot);
     }
 
-    /** Deal 2 cards to each player's hand.*/
+    /** Deal a specified number of cards to each player's hand.*/
     public void dealPlayers(int numberOfCards) {
         for (Player player : mPlayers) {
             for (int ii = 0; ii < numberOfCards; ii++) {
@@ -69,7 +69,7 @@ public class Game {
         System.out.println(numberOfCards + " card(s) were dealt to each player.");
     }
 
-    /** Deal a card to community hand. */
+    /** Deal a specified number of cards to community hand. */
     public void dealCommunity(int numberOfCards) {
         for(int ii = 0; ii < numberOfCards; ii++){
             mDeck.dealTo(mCommunityHand);
@@ -85,6 +85,7 @@ public class Game {
     public void bettingStage() {
         for (int round = 1; round < 4; round++) {
 
+            /* Resets the choices of players, EXCEPT for folded ones. */
             resetChoices();
 
             bettingRound();
@@ -103,7 +104,6 @@ public class Game {
             }
 
             displayStatus();
-            resetChoices(); // Folded players are still recorded in hasFolded attribute
 
             /* Set showdown if no winner has been decided after the third round. */
             if (round == 3) {
@@ -214,6 +214,8 @@ public class Game {
      *  Check if everyone else has folded except the player whose index is the parameter.
      *  Checked at the start of every player's turn, and if this is true, then current player is
      *  the winner.
+     *  @param index index of the player
+     *  @return whether all other players have either called or folded
      */
     public boolean checkOthersFolded(int index) {
         int numberFolded = 0;
@@ -233,8 +235,12 @@ public class Game {
         return (mNumberOfPlayers == (numberFolded + 1) );
     }
 
-    /* Check if everyone has either called or folded. Used at the start of a player's turn to ensure
-     * when a one round has been completed and no one raises, the round ends.*/
+    /**
+     * Check if everyone has either called or folded. Used at the start of a player's turn to ensure
+     * when a one round has been completed and no one raises, the round ends.
+     * @param index index of the player
+     * @return whether all other players have either called or folded
+     */
     public boolean checkOthersCalledFolded(int index) {
         int countFolded = 0;
         int countCalled = 0;
@@ -261,6 +267,7 @@ public class Game {
             player.setBet(0);
         }
 
+        /* Declare and reward winner. */
         System.out.println();
         System.out.println("!!!!!!THE GAME HAS ENDED!!!!!");
         System.out.println("The winner is Player " + mPlayers[mWinner].getName());
@@ -279,7 +286,6 @@ public class Game {
     /** Setup for a new game after continuing. */
     public void reset() {
         /* Reset game variables. */
-        resetChoices();
         mWinner = -1;
         mShowdown = false;
         mCurrentBet = 0 ;

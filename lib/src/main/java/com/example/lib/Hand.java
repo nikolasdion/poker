@@ -20,6 +20,8 @@ public class Hand {
      * The type of the hand, with a variable typeInt which indicates its relative standing to
      * other types. Value is UNDECLARED by default, and is only declared once checkTypeRank() method
      * is run.
+     * typeInt is the integer which denotes the type's relative rank compared to other types
+     * (STRAIGHTFLUSH is highest, HIGHESTCARD is lowest)
      */
     enum Type{
         STRAIGHTFLUSH(9),
@@ -244,6 +246,7 @@ public class Hand {
      * These methods returns an integer. If the hand is not of that type, the method returns 0.
      * If the hand is of that type, the method returns the rank of the hand within the type.
      *
+     * These are meant to be used only on 5-cards hand.
      * Use combinations(5) to get a 5-card hand.
      */
 
