@@ -193,23 +193,47 @@ public class Hand {
 
     /** Check and save the type and rank of the hand. */
     public void checkTypeRank() {
-        if (isStraightFlush()) {
+        if (checkStraightFlush() > 0) {
+            mType = Type.STRAIGHTFLUSH;
+            mRank = checkStraightFlush();
+        }
 
-        } else if (isFourOfAKind()) {
+        else if (checkFourOfAKind() > 0) {
+            mType = Type.FOUROFAKIND;
+            mRank = checkFourOfAKind();
+        }
 
-        } else if (isFullHouse()) {
+        else if (checkFullHouse() > 0) {
+            mType = Type.FULLHOUSE;
+            mRank = checkFullHouse();
+        }
 
-        } else if (isFlush()) {
+        else if (checkFlush() > 0) {
+            mType = Type.FLUSH;
+            mRank = checkFlush();
+        }
 
-        } else if (isStraight()) {
+        else if (checkStraight() > 0) {
+            mType = Type.STRAIGHT;
+            mRank = checkStraight();
+        }
 
-        } else if (isThreeOfAKind()) {
+        else if (checkThreeOfAKind() > 0) {
+            mType = Type.THREEOFAKIND;
+            mRank = checkThreeOfAKind();
+        }
 
-        } else if (isDoublePair()) {
+        else if (checkDoublePair() > 0) {
+            mType = Type.DOUBLEPAIR;
+            mRank = checkDoublePair();
+        }
 
-        } else if (isPair()) {
+        else if (checkPair() > 0) {
+            mType = Type.PAIR;
+            mRank = checkPair();
+        }
 
-        } else {
+        else {
             mType = Type.HIGHESTCARD;
             mRank = highestCard().absValue();
         }
@@ -217,25 +241,25 @@ public class Hand {
 
     /**
      * METHODS TO DETERMINE TYPE AND RANK
-     * type and rank are set while the methods are run, therefore it not only returns
-     * a boolean value but also modifies the hand's properties (i.e. rank and type).
-     * Note that most of these only work properly with a 5-card hand.
+     * These methods returns an integer. If the hand is not of that type, the method returns 0.
+     * If the hand is of that type, the method returns the rank of the hand within the type.
+     *
      * Use combinations(5) to get a 5-card hand.
      */
 
-    private boolean isStraightFlush() {
+    private int checkStraightFlush() {
+        int tempStraight = checkStraight();
+        int tempFlush = checkFlush();
 
         /* Check if the hand is both straight and flush. */
-        if (isStraight() && isFlush()) {
-            mType = Type.STRAIGHTFLUSH;
-            mRank = highestCard().absValue();
-            return true;
+        if ( (tempStraight > 0) && (tempFlush > 0) ) {
+            return highestCard().absValue();
         } else {
-            return false;
+            return 0;
         }
     }
 
-    private boolean isFourOfAKind() {
+    private int checkFourOfAKind() {
         /* Create an inventory of the hand, which stores how many cards have each value.
         * The number of cards with value n is stored in index n-2. */
         int [] inv = inventory();
@@ -244,26 +268,27 @@ public class Hand {
         for (int index=0 ; index<13; index++) {
 
             /* Check if there are 4 cards with this value in the hand. */
-            if (inv[index] == 4) {
-                mType = Type.FOUROFAKIND;
-                mRank = index+2;
-                return true;
+            if (inv[index] == 4) {;
+                return index;
             }
         }
-        return false;
+
+        return 0;
     }
 
-    private boolean isFullHouse() {
+    private int checkFullHouse() {
+        int tempPair = checkPair();
+        int tempThreeOfAKind = checkThreeOfAKind();
+
         /* Check if the hand contain both a pair and a three of a kind. */
-        if (isPair() && isThreeOfAKind()) {
-            mType = Type.FULLHOUSE; // Rank is already determined by isThreeOfAKind.
-            return true;
+        if ( (tempPair > 0) && (tempThreeOfAKind > 0) ) {
+            return tempThreeOfAKind;
         } else {
-            return false;
+            return 0;
         }
     }
 
-    private boolean isFlush() {
+    private int checkFlush() {
 
         /* Counters for the number of cards with the respective suits. */
         int spades = 0;
@@ -277,31 +302,29 @@ public class Hand {
             /* Increase the counter of the suit of the following card. */
             switch (card.getSuit()) {
                 case ClUBS:
-                    clubs = clubs + 1;
+                    clubs++;
                     break;
                 case DIAMONDS:
-                    diamonds = diamonds + 1;
+                    diamonds++;
                     break;
                 case HEARTS:
-                    hearts = hearts + 1;
+                    hearts++;
                     break;
                 case SPADES:
-                    spades = spades + 1;
+                    spades++;
                     break;
             }
         }
 
         /* If there are 5 cards with the same suit, the hand is a flush. */
         if (spades == 5 || hearts == 5 || diamonds == 5 || clubs == 5) {
-            mType = Type.FLUSH;
-            mRank = highestCard().absValue();
-            return true;
+            return highestCard().absValue();
         } else {
-            return false;
+            return 0;
         }
     }
 
-    private boolean isStraight() {
+    private int checkStraight() {
         /* Create an inventory of the hand, which stores how many cards have each value.
         * The number of cards with value n is stored in index n-2. */
         int[] inv = inventory();
@@ -324,17 +347,15 @@ public class Hand {
                 }
 
                 /* Once there has been 5 consecutive cards, the hand is a straight. */
-                if (count ==5) {
-                    mType = Type.STRAIGHT;
-                    mRank = currentIndex + 2;
-                    return true;
+                if (count ==5) {;
+                    return currentIndex;
                 }
             }
         }
-        return false;
+        return 0;
     }
 
-    private boolean isThreeOfAKind() {
+    private int checkThreeOfAKind() {
         /* Create an inventory of the hand, which stores how many cards have each value.
         * The number of cards with value n is stored in index n-2. */
         int[] inv = inventory();
@@ -344,15 +365,13 @@ public class Hand {
 
             /* If there are 3 cards of the same value, the hand is a three of a kind. */
             if (inv[index] == 3) {
-                mType = Type.THREEOFAKIND;
-                mRank = index + 2;
-                return true;
+                return index;
             }
         }
-        return false;
+        return 0;
     }
 
-    private boolean isDoublePair() {
+    private int checkDoublePair() {
         int numberOfPairs = 0;
         int highestPair = 0;
 
@@ -372,15 +391,13 @@ public class Hand {
 
         /* If there are two pairs, the hand is a double pair.*/
         if (numberOfPairs == 2) {
-            mType = Type.DOUBLEPAIR;
-            mRank = highestPair;
-            return true;
+            return highestPair;
         } else {
-            return false;
+            return 0;
         }
     }
 
-    private boolean isPair() {
+    private int checkPair() {
 
         /* Create an inventory of the hand, which stores how many cards have each value.
         * The number of cards with value n is stored in index n-2. */
@@ -390,13 +407,11 @@ public class Hand {
         for (int index = 0; index < 13; index++) {
             /* If there are 2 cards of the same value, the hand is a pair. */
             if (inv[index] == 2) {
-                mType = Type.PAIR;
-                mRank = index;
-                return true;
+                return index;
             }
         }
 
-        return false;
+        return 0;
     }
 
     /**
