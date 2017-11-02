@@ -121,6 +121,11 @@ public class Hand {
         int highest = 0;
         Hand highestHand = new Hand();
 
+        /* If there are less than 5 cards in the hand, return hand. */
+        if(mCards.size() < 5){
+            return this;
+        }
+
         /* Loop through all possible 5-card hand combination. */
         for (Hand combination : combinations(5)) {
             if (combination.absoluteRank()> highest) {
