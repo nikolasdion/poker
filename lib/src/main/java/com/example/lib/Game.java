@@ -159,7 +159,7 @@ public class Game {
                     /* End betting round everyone else has either called or folded EXCEPT during
                      * the first turn. */
                     if (checkOthersCalledFolded(index)
-                            && (mPlayers[index].getChoice() != 0) ) { // Choice is set to 0 at the start of every round.
+                            && (mPlayers[index].getChoice() != Player.Choice.UNDECLARED) ) { // Choice is set to 0 at the start of every round.
                         return;
                     }
 
@@ -186,7 +186,7 @@ public class Game {
     /** Reset the choice parameter of players after each round of betting. */
     public void resetChoices() {
         for (Player player : mPlayers) {
-            player.setChoice(0);
+            player.setChoice(Player.Choice.UNDECLARED);
         }
     }
 
@@ -212,6 +212,8 @@ public class Game {
                 Hand bestHand = tempHand.getBestHand();
                 System.out.println("Player " + mPlayers[index].getName() + "'s best hand: "+ bestHand.show());
                 System.out.println("Player " + mPlayers[index].getName() + "'s absolute : "+ bestHand.absoluteRank());
+                System.out.println(bestHand.getType());
+                System.out.println();
 
                 /* If the best hand of current player is higher than the current highest,
                  * set winner to current player and highest rank to current hand. */
@@ -256,7 +258,7 @@ public class Game {
             if (player != mPlayers[index]) {
                 if (player.hasFolded()) {
                     countFolded++;
-                } else if (player.getChoice() == 2) {
+                } else if (player.getChoice() == Player.Choice.CALL) {
                     countCalled++;
                 }
             }
@@ -304,7 +306,7 @@ public class Game {
 
         for (Player player : mPlayers) {
             player.setHand(new Hand());
-            player.setChoice(0);
+            player.setChoice(Player.Choice.UNDECLARED);
             player.setFolded(false);
         }
 

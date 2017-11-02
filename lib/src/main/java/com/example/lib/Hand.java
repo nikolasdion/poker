@@ -13,14 +13,41 @@ import java.util.ArrayList;
 public class Hand {
 
     ArrayList<Card> mCards = new ArrayList<>(); // Cards contained in the hand.
-    private int mType;  //  Type, e.g. straight flush (9), four of a kind (8), .... pair(2), highest card(1)
+    private Type mType;  //  Type, defined in enum below
     private int mRank;  //  Rank within the type of hand
 
     /**
-     *  By default initialise an empty hand.
+     * The type of the hand, with a variable typeInt which indicates its relative standing to
+     * other types. Value is UNDECLARED by default, and is only declared once checkTypeRank() method
+     * is run.
      */
+    enum Type{
+        STRAIGHTFLUSH(9),
+        FOUROFAKIND(8),
+        FULLHOUSE(7),
+        FLUSH(6),
+        STRAIGHT(5),
+        THREEOFAKIND(4),
+        DOUBLEPAIR(3),
+        PAIR(2),
+        HIGHESTCARD(1),
+        UNDECLARED(0);
+
+        private int typeInt;
+
+        Type(int n){
+            typeInt = n;
+        }
+
+        public int getInt(){
+            return typeInt;
+        }
+
+    }
+
+    /** By default initialises an empty hand. */
     Hand() {
-        mType = 0;
+        mType = Type.UNDECLARED;
         mRank = 0;
     }
 
@@ -30,7 +57,7 @@ public class Hand {
      */
     Hand(ArrayList<Card> cards) {
         mCards = cards;
-        mType = 0;
+        mType = Type.UNDECLARED;
         mRank = 0;
     }
 
@@ -80,6 +107,10 @@ public class Hand {
      */
     int size() {
         return mCards.size();
+    }
+
+    public Type getType() {
+        return mType;
     }
 
     /**
@@ -152,7 +183,7 @@ public class Hand {
      */
     public int absoluteRank() {
         checkTypeRank();
-        return (100 * mType) + mRank;
+        return (100 * mType.getInt()) + mRank;
     }
 
     /** Check and save the type and rank of the hand. */
@@ -174,7 +205,7 @@ public class Hand {
         } else if (isPair()) {
 
         } else {
-            mType = 1;
+            mType = Type.HIGHESTCARD;
             mRank = highestCard().absValue();
         }
     }
@@ -191,7 +222,7 @@ public class Hand {
 
         /* Check if the hand is both straight and flush. */
         if (isStraight() && isFlush()) {
-            mType = 9;
+            mType = Type.STRAIGHTFLUSH;
             mRank = highestCard().absValue();
             return true;
         } else {
@@ -209,7 +240,7 @@ public class Hand {
 
             /* Check if there are 4 cards with this value in the hand. */
             if (inv[index] == 4) {
-                mType = 8;
+                mType = Type.FOUROFAKIND;
                 mRank = index+2;
                 return true;
             }
@@ -220,7 +251,7 @@ public class Hand {
     private boolean isFullHouse() {
         /* Check if the hand contain both a pair and a three of a kind. */
         if (isPair() && isThreeOfAKind()) {
-            mType = 7; // Rank is already determined by isThreeOfAKind.
+            mType = Type.FULLHOUSE; // Rank is already determined by isThreeOfAKind.
             return true;
         } else {
             return false;
@@ -257,7 +288,7 @@ public class Hand {
 
         /* If there are 5 cards with the same suit, the hand is a flush. */
         if (spades == 5 || hearts == 5 || diamonds == 5 || clubs == 5) {
-            mType = 6;
+            mType = Type.FLUSH;
             mRank = highestCard().absValue();
             return true;
         } else {
@@ -289,7 +320,7 @@ public class Hand {
 
                 /* Once there has been 5 consecutive cards, the hand is a straight. */
                 if (count ==5) {
-                    mType = 5;
+                    mType = Type.STRAIGHT;
                     mRank = currentIndex + 2;
                     return true;
                 }
@@ -308,7 +339,7 @@ public class Hand {
 
             /* If there are 3 cards of the same value, the hand is a three of a kind. */
             if (inv[index] == 3) {
-                mType = 4;
+                mType = Type.THREEOFAKIND;
                 mRank = index + 2;
                 return true;
             }
@@ -336,7 +367,7 @@ public class Hand {
 
         /* If there are two pairs, the hand is a double pair.*/
         if (numberOfPairs == 2) {
-            mType = 3;
+            mType = Type.DOUBLEPAIR;
             mRank = highestPair;
             return true;
         } else {
@@ -354,15 +385,14 @@ public class Hand {
         for (int index = 0; index < 13; index++) {
             /* If there are 2 cards of the same value, the hand is a pair. */
             if (inv[index] == 2) {
-                mType = 2;
-                mRank = index + 2;
+                mType = Type.PAIR;
+                mRank = index;
                 return true;
             }
         }
 
         return false;
     }
-
 
     /**
      * Create an inventory of the hand, i.e. how many cards have certain value. returns an

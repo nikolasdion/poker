@@ -94,7 +94,6 @@ public class Card {
 
     /**
      * Display card data as a long string directly from the enum constants, e.g. "TWO of HEARTS"
-     * or "ACE of SPADES".
      * @return a string displaying the card in long form*/
     public String strCardLong() {
         return mValue + " of " + mSuit;

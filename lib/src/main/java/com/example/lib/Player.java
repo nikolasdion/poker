@@ -11,11 +11,30 @@ public class Player {
     private int mMoney;
     private Hand mHand = new Hand();
     private String mName;
-    private int mChoice; // Player's action (1: raise, 2: check, 3: fold)
+    private Choice mChoice; // Player's action (1: raise, 2: call, 3: fold)
     private int mBet; // The amount of money the player is betting in the current game.
     private boolean mHasFolded;
     Scanner mScanner = new Scanner( System.in );
 
+    enum Choice {
+        RAISE,
+        CALL,
+        FOLD,
+        UNDECLARED;
+
+        public static Choice fromInt(int x) {
+            switch(x) {
+                case 1:
+                    return RAISE;
+                case 2:
+                    return CALL;
+                case 3:
+                    return FOLD;
+                default:
+                    return UNDECLARED;
+            }
+        }
+    }
 
     /**
      * Initialise a player with some money and a name.
@@ -25,7 +44,7 @@ public class Player {
     Player(int money, String name) {
         mMoney = money;
         mName = name;
-        mChoice = 0;
+        mChoice = Choice.UNDECLARED;
         mBet = 0;
         mHasFolded = false;
     }
@@ -42,7 +61,7 @@ public class Player {
         mName = name;
     }
 
-    public void setChoice(int choice) {
+    public void setChoice(Choice choice) {
         mChoice = choice;
     }
 
@@ -66,7 +85,7 @@ public class Player {
         return mName;
     }
 
-    public int getChoice() {
+    public Choice getChoice() {
         return mChoice;
     }
 
@@ -83,7 +102,7 @@ public class Player {
     public int turn(int currentBet, int noOfRaises ) {
 
         /* Set player's choice to 0. */
-        mChoice = 0;
+        mChoice = Choice.UNDECLARED;
 
         /* Display status of the game for player's information. */
         System.out.println("!!!PLAYER " + mName + "'s TURN!!!");
@@ -92,21 +111,21 @@ public class Player {
         System.out.println("Player " + mName + "'s bet   : " + mBet);
 
         /* Player makes a choice. */
-        while (mChoice == 0) {
+        while (mChoice == Choice.UNDECLARED) {
             System.out.println("(1: raise, 2: call, 3: fold)");
             System.out.print("Player " + mName + "'s move  : ");
-            mChoice = mScanner.nextInt();
+            mChoice = Choice.fromInt(mScanner.nextInt());
 
             switch (mChoice) {
 
                 /* Player raises.*/
-                case 1:
+                case RAISE:
 
                     /* Give error message and force player to choose again if there has been 3
                      * raises in a round. */
                     if (noOfRaises > 2) {
                         System.out.println("Cannot raise further in this round.");
-                        mChoice = 0;
+                        mChoice = Choice.UNDECLARED;
                         break;
                     }
 
@@ -118,7 +137,7 @@ public class Player {
                      * money. */
                     if (mMoney + mBet < currentBet + raise) {
                         System.out.println("Insufficient money to raise.");
-                        mChoice = 0;
+                        mChoice = Choice.UNDECLARED;
                         break;
                     }
 
@@ -127,31 +146,31 @@ public class Player {
                     mBet = currentBet + raise;
                     return raise;
 
-                /* Player checks. */
-                case 2:
+                /* Player calls. */
+                case CALL:
 
                     /* Give error message and force player to choose again if she has insufficient money. */
                     if (mMoney + mBet < currentBet) {
                         System.out.println("Insufficient money to call.");
-                        mChoice = 0;
+                        mChoice = Choice.UNDECLARED;
                         break;
                     }
 
-                    /* If check was successful, update game and player variables. */
+                    /* If call was successful, update game and player variables. */
                     mMoney = mMoney + (mBet- currentBet);
                     mBet = currentBet;
                     System.out.println("Called.");
                     return 0;
 
                 /* Player folds. */
-                case 3:
+                case FOLD:
                     mHasFolded = true;
                     System.out.println("Folded.");
                     return -1;
 
                 default:
                     System.out.println("Invalid input.");
-                    mChoice = 0;
+                    mChoice = Choice.UNDECLARED;
 
             }
         }
