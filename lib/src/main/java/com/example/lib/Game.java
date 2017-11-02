@@ -48,10 +48,6 @@ public class Game {
         return mIsPlaying;
     }
 
-    public boolean getShowdown() {
-        return mShowdown;
-    }
-
     /* METHODS */
 
     /**
@@ -174,6 +170,13 @@ public class Game {
 
     /** Compare remaining players' hands. Executed if no winner is announced after betting stage. */
     public void showdown() {
+
+        /* Check if showdown is needed. If not, end method. */
+        if (!mShowdown) {
+            return;
+        }
+
+        /* If showdown is needed, the following code is executed. */
         int highest = 0;
         System.out.println();
         System.out.println("!!! SHOWDOWN !!!");
