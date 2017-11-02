@@ -13,7 +13,7 @@ public class Player {
     private String mName;
     private Choice mChoice; // Player's action (1: raise, 2: call, 3: fold)
     private int mBet; // The amount of money the player is betting in the current game.
-    private boolean mHasFolded;
+//    private boolean mHasFolded;
     Scanner mScanner = new Scanner( System.in );
 
     enum Choice {
@@ -46,7 +46,6 @@ public class Player {
         mName = name;
         mChoice = Choice.UNDECLARED;
         mBet = 0;
-        mHasFolded = false;
     }
 
     public void setMoney(int money) {
@@ -69,10 +68,6 @@ public class Player {
         mBet = bet;
     }
 
-    public void setFolded(boolean hasFolded) {
-        mHasFolded = hasFolded;
-    }
-
     public int getMoney() {
         return mMoney;
     }
@@ -93,8 +88,14 @@ public class Player {
         return mBet;
     }
 
+    /* Whether player has folded (valid for an entire game). */
     public boolean hasFolded() {
-        return mHasFolded;
+        return mChoice == Choice.FOLD;
+    }
+
+    /* Whether player has called in the current round (Choice is reset at the end of a round). */
+    public boolean hasCalled() {
+        return mChoice == Choice.CALL;
     }
 
     /* A player's turn in the game. Return the raise she makes (positive for raise, 0 for fold,
@@ -164,7 +165,7 @@ public class Player {
 
                 /* Player folds. */
                 case FOLD:
-                    mHasFolded = true;
+//                    mHasFolded = true;
                     System.out.println("Folded.");
                     return -1;
 

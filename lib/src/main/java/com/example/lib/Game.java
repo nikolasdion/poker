@@ -52,26 +52,6 @@ public class Game {
         return mShowdown;
     }
 
-//    public int getPot() {
-//        return mPot;
-//    }
-//
-//    public void setPot(int pot) {
-//        mPot = pot;
-//    }
-//
-//    public int getCurrentBet() {
-//        return mCurrentBet;
-//    }
-//
-//    public void setCurrentBet(int currentBet) {
-//        mCurrentBet = currentBet;
-//    }
-//
-//    public Hand getCommunityHand() {
-//        return mCommunityHand;
-//    }
-
     /* METHODS */
 
     /**
@@ -183,10 +163,12 @@ public class Game {
         }
     }
 
-    /** Reset the choice parameter of players after each round of betting. */
+    /** Reset the choice parameter of players after each round of betting, except for FOLD. */
     public void resetChoices() {
         for (Player player : mPlayers) {
-            player.setChoice(Player.Choice.UNDECLARED);
+            if(!player.hasFolded()) {
+                player.setChoice(Player.Choice.UNDECLARED);
+            }
         }
     }
 
@@ -258,7 +240,7 @@ public class Game {
             if (player != mPlayers[index]) {
                 if (player.hasFolded()) {
                     countFolded++;
-                } else if (player.getChoice() == Player.Choice.CALL) {
+                } else if (player.hasCalled()) {
                     countCalled++;
                 }
             }
@@ -307,7 +289,6 @@ public class Game {
         for (Player player : mPlayers) {
             player.setHand(new Hand());
             player.setChoice(Player.Choice.UNDECLARED);
-            player.setFolded(false);
         }
 
         mCommunityHand = new Hand();
@@ -347,8 +328,5 @@ public class Game {
 
         System.out.println("Thank you for playing!");
     }
-
-
-
 
 }
