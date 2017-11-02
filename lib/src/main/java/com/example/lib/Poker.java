@@ -32,10 +32,8 @@ public class Poker {
             /* Betting stage. */
             game.bettingStage();
 
-            /* Showdown (if needed). */
-            if (game.getShowdown()) {
-                game.showdown();
-            }
+            /* Showdown (if needed, automatically checked within the method). */
+            game.showdown();
 
             /* Reward winner with money in the pot. */
             game.reward();
